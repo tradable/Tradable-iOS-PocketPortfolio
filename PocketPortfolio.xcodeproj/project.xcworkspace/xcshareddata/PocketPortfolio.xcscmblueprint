@@ -1,0 +1,37 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "B1218D190EE80FD2232E052CFF1D0D2C1280F1D6",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "8392B4A9B1B2F5D08C5E1A73B1BCB890A4C55ACD" : 0,
+    "B1218D190EE80FD2232E052CFF1D0D2C1280F1D6" : 0,
+    "CA8033207C97BCC1A28C8D52CF04127A99E6AC0F" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "4A08893A-6217-4307-ACDD-314737BA9CE8",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "8392B4A9B1B2F5D08C5E1A73B1BCB890A4C55ACD" : "TradableExampleApp\/",
+    "B1218D190EE80FD2232E052CFF1D0D2C1280F1D6" : "PocketPortfolio\/",
+    "CA8033207C97BCC1A28C8D52CF04127A99E6AC0F" : "..\/TradableAPI"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "PocketPortfolio",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "PocketPortfolio.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/bitbucket.org\/tradable\/tradableios-pocket-portfolio.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8392B4A9B1B2F5D08C5E1A73B1BCB890A4C55ACD"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/pingd\/Tradable-iOS-PocketPortfolio.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B1218D190EE80FD2232E052CFF1D0D2C1280F1D6"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/bitbucket.org\/tradable\/tradableios-api.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CA8033207C97BCC1A28C8D52CF04127A99E6AC0F"
+    }
+  ]
+}

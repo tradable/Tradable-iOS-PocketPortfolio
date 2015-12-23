@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "8392B4A9B1B2F5D08C5E1A73B1BCB890A4C55ACD",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "8392B4A9B1B2F5D08C5E1A73B1BCB890A4C55ACD" : 0,
+    "CA8033207C97BCC1A28C8D52CF04127A99E6AC0F" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "6C0AC740-A108-40B7-857F-EA0104D177B8",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "8392B4A9B1B2F5D08C5E1A73B1BCB890A4C55ACD" : "TradableExampleApp\/",
+    "CA8033207C97BCC1A28C8D52CF04127A99E6AC0F" : "..\/TradableAPI"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "TradableExampleApp",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "TradableExampleApp.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/bitbucket.org\/tradable\/tradableios-pocket-portfolio.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8392B4A9B1B2F5D08C5E1A73B1BCB890A4C55ACD"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/bitbucket.org\/tradable\/tradableios-api.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CA8033207C97BCC1A28C8D52CF04127A99E6AC0F"
+    }
+  ]
+}
