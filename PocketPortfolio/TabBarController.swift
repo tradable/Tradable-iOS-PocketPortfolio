@@ -43,15 +43,15 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         
         addCenterButtonWithImage(middleImage, selectedStateImage: selectedStateMiddleImage)
         
-        tradable.delegate = self.viewControllers?[0] as? TradableAPIDelegate
+        tradable.delegate = self.viewControllers?[0] as? TradableEventsDelegate
     }
     
     func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
-        if !viewController.isKindOfClass(TradeViewController) {
+        if !(viewController is TradeViewController) {
             deselectMiddleButton()
         }
         
-        tradable.delegate = viewController as? TradableAPIDelegate
+        tradable.delegate = viewController as? TradableEventsDelegate
     }
     
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
@@ -81,7 +81,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
             tradeButton.center = center;
         }
         
-        tradeButton.addTarget(self, action: "changeTabToMiddleTab:", forControlEvents: UIControlEvents.TouchUpInside)
+        tradeButton.addTarget(self, action: #selector(TabBarController.changeTabToMiddleTab(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         
         view.addSubview(tradeButton)
     }

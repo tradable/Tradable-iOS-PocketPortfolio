@@ -60,7 +60,7 @@ class WatchlistViewController: UITableViewController, TradableInstrumentSelector
         numberFormatter.maximumFractionDigits = 1
         numberFormatter.minimumFractionDigits = 1
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "instrumentsChanged", name: instrumentsDidChangeNotificationKey, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(WatchlistViewController.instrumentsChanged), name: instrumentsDidChangeNotificationKey, object: nil)
     }
     
     deinit {
@@ -171,9 +171,9 @@ class WatchlistViewController: UITableViewController, TradableInstrumentSelector
         
         cell.symbolLabel.text = findBrokerageAccountSymbolForSymbol(symbol)
         
-        cell.askButton.addTarget(self, action: "showTradeView:", forControlEvents: UIControlEvents.TouchUpInside)
+        cell.askButton.addTarget(self, action: #selector(WatchlistViewController.showTradeView(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         cell.askButton.tag = indexPath.row * 2
-        cell.bidButton.addTarget(self, action: "showTradeView:", forControlEvents: UIControlEvents.TouchUpInside)
+        cell.bidButton.addTarget(self, action: #selector(WatchlistViewController.showTradeView(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         cell.bidButton.tag = indexPath.row * 2 + 1
         
         cell.askButton.setAttributedTitle(NSAttributedString(string: "..."), forState: UIControlState.Normal)
@@ -235,65 +235,72 @@ class WatchlistViewController: UITableViewController, TradableInstrumentSelector
                     
                     let symbol = symbols[indexPath.row]
                     
-                    let instrument = findInstrumentForSymbol(symbol)!
-                    
-                    let precision = instrument.pipPrecision
-                    
-                    priceFormatter.numberStyle = NSNumberFormatterStyle.DecimalStyle
-                    priceFormatter.minimumFractionDigits = precision + 1
-                    
-                    var length = 2
-                    var toLast = 1
-                    if precision == 0 {
-                        toLast = 3
-                    } else if precision == 1 {
-                        length = 3
-                    }
-                    
-                    if let ask = pricesForSymbols[symbol]?.ask {
-                        let askButton = cell.askButton
-                        if let prevAskText = askButton.titleLabel!.text {
-                            if let prevAsk = priceFormatter.numberFromString(prevAskText)?.doubleValue {
-                                if prevAsk - ask > EPSILON {
-                                    askButton.fadeDown()
-                                } else if ask - prevAsk > EPSILON {
-                                    askButton.fadeUp()
+                    if let instrument = findInstrumentForSymbol(symbol) {
+                        
+                        priceFormatter.numberStyle = NSNumberFormatterStyle.DecimalStyle
+                        priceFormatter.minimumFractionDigits = instrument.pipPrecision == nil ? instrument.decimals : instrument.pipPrecision! + 1
+                        
+                        let precision = instrument.pipPrecision == nil ? 0 : instrument.pipPrecision! + 1
+                        
+                        var length = 2
+                        var toLast = 1
+                        if precision == 0 {
+                            toLast = 3
+                        } else if precision == 1 {
+                            length = 3
+                        }
+                        
+                        if let ask = pricesForSymbols[symbol]?.ask {
+                            let askButton = cell.askButton
+                            if let prevAskText = askButton.titleLabel!.text {
+                                if let prevAsk = priceFormatter.numberFromString(prevAskText)?.doubleValue {
+                                    if prevAsk - ask > EPSILON {
+                                        askButton.fadeDown()
+                                    } else if ask - prevAsk > EPSILON {
+                                        askButton.fadeUp()
+                                    }
                                 }
                             }
+                            let priceStr = priceFormatter.stringFromNumber(ask)!
+                            
+                            let priceString = NSMutableAttributedString(string: priceStr)
+                            if instrument.pipPrecision != nil {
+                                priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.5), range: NSRange(location: 0, length: priceString.length))
+                                priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSRange(location: priceString.length - length - toLast, length: length + toLast))
+                            } else {
+                                 priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSRange(location: 0, length: priceString.length))
+                            }
+                            askButton.setAttributedTitle(priceString, forState: UIControlState.Normal)
                         }
-                        let priceStr = priceFormatter.stringFromNumber(ask)!
                         
-                        let priceString = NSMutableAttributedString(string: priceStr)
-                        priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.5), range: NSRange(location: 0, length: priceString.length))
-                        priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSRange(location: priceString.length - length - toLast, length: length + toLast))
-                        
-                        askButton.setAttributedTitle(priceString, forState: UIControlState.Normal)
-                    }
-                    
-                    if let bid = pricesForSymbols[symbol]?.bid {
-                        let bidButton = cell.bidButton
-                        if let prevBidText = bidButton.titleLabel!.text  {
-                            if let prevBid = priceFormatter.numberFromString(prevBidText)?.doubleValue {
-                                if prevBid - bid > EPSILON {
-                                    bidButton.fadeDown()
-                                } else if bid - prevBid > EPSILON {
-                                    bidButton.fadeUp()
+                        if let bid = pricesForSymbols[symbol]?.bid {
+                            let bidButton = cell.bidButton
+                            if let prevBidText = bidButton.titleLabel!.text  {
+                                if let prevBid = priceFormatter.numberFromString(prevBidText)?.doubleValue {
+                                    if prevBid - bid > EPSILON {
+                                        bidButton.fadeDown()
+                                    } else if bid - prevBid > EPSILON {
+                                        bidButton.fadeUp()
+                                    }
                                 }
                             }
+                            let priceStr = priceFormatter.stringFromNumber(bid)!
+                            
+                            let priceString = NSMutableAttributedString(string: priceStr)
+                            if instrument.pipPrecision != nil {
+                                priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.5), range: NSRange(location: 0, length: priceString.length))
+                                priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSRange(location: priceString.length - length - toLast, length: length + toLast))
+                            } else {
+                                priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSRange(location: 0, length: priceString.length))
+                            }
+                            bidButton.setAttributedTitle(priceString, forState: UIControlState.Normal)
                         }
-                        let priceStr = priceFormatter.stringFromNumber(bid)!
                         
-                        let priceString = NSMutableAttributedString(string: priceStr)
-                        priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.5), range: NSRange(location: 0, length: priceString.length))
-                        priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSRange(location: priceString.length - length - toLast, length: length + toLast))
+                        if let spread = pricesForSymbols[symbol]?.spread {
+                            cell.spreadLabel.text = numberFormatter.stringFromNumber(spread)
+                        }
                         
-                        bidButton.setAttributedTitle(priceString, forState: UIControlState.Normal)
                     }
-                    
-                    if let spread = pricesForSymbols[symbol]?.spread {
-                        cell.spreadLabel.text = numberFormatter.stringFromNumber(spread)
-                    }
-                    
                     cell.backgroundColor = UIColor.clearColor()
                 }
             }

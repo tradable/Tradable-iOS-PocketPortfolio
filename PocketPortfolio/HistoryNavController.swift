@@ -10,7 +10,7 @@ import UIKit
 
 import TradableAPI
 
-class HistoryNavController: UINavigationController, TradableAPIDelegate, TradableOrderEntryDelegate {
+class HistoryNavController: UINavigationController, TradableEventsDelegate, TradableOrderEntryDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,6 +18,10 @@ class HistoryNavController: UINavigationController, TradableAPIDelegate, Tradabl
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    func tradableUpdateError(error: TradableError) {
+        print(error)
     }
     
     func tradableOrderEntryDismissed(order: TradableOrder?) {

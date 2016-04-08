@@ -10,7 +10,7 @@ import UIKit
 
 import TradableAPI
 
-class AccountNavController: UINavigationController, TradableAPIDelegate, TradableOrderEntryDelegate {
+class AccountNavController: UINavigationController, TradableEventsDelegate, TradableOrderEntryDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,25 +20,17 @@ class AccountNavController: UINavigationController, TradableAPIDelegate, Tradabl
         super.didReceiveMemoryWarning()
     }
     
-    func tradableMetricsUpdated(metrics: TradableAccountMetrics) {        
+    func tradableAccountMetricsUpdated(accountMetrics: TradableAccountMetrics) {
         let accountVC = self.viewControllers[0] as! AccountViewController
-        accountVC.balance = metrics.balance
-        accountVC.equity = metrics.equity
-        accountVC.openPnL = metrics.openProfit
-        accountVC.marginUse = metrics.marginUsed
+        accountVC.balance = accountMetrics.balance
+        accountVC.equity = accountMetrics.equity
+        accountVC.openPnL = accountMetrics.openProfit
+        accountVC.marginAmountUsed = accountMetrics.marginAmountUsed
         accountVC.updateData()
     }
     
     func tradableOrderEntryDismissed(order: TradableOrder?) {
         tradable.delegate = self
         (tabBarController as! TabBarController).deselectMiddleButton()
-    }
-    
-    func tradableReady() {
-        tradable.getAvailableAccounts { (accounts, error) -> Void in
-            if let accounts = accounts {
-                accountList = accounts
-            }
-        }
     }
 }

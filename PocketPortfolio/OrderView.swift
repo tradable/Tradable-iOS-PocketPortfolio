@@ -48,45 +48,50 @@ class OrderView: UIView {
         self.order = order
         symbolLabel.text = findBrokerageAccountSymbolForSymbol(order.symbol)
         
-        let instrument = findInstrumentForSymbol(order.symbol)!
-        
-        if order.type == .LIMIT {
-            orderTypeLabel.text = "Limit Order"
-        } else if order.type == .STOP {
-            orderTypeLabel.text = "Stop Order"
-        } else {
-            orderTypeLabel.text = "Pending Trade"
-        }
-        if order.side == .BUY {
-            orderSideLabel.text = "Buy"
-            orderSideLabel.textColor = greenColor
-        } else if order.side == .SELL {
-            orderSideLabel.text = "Sell"
-            orderSideLabel.textColor = darkPinkColor
-        }
-        amountLabel.text = amountFormatter.stringFromNumber(order.amount)
-        
-        if order.price == 0 {
-            priceLabel.attributedText = NSMutableAttributedString(string: "Market")
-        } else {
-            let precision = instrument.pipPrecision
+        if let instrument = findInstrumentForSymbol(order.symbol){
             
-            priceFormattter.minimumFractionDigits = precision + 1
-            var length = 2
-            var toLast = 1
-            if precision == 0 {
-                toLast = 3
-            } else if precision == 1 {
-                length = 3
+            if order.type == .LIMIT {
+                orderTypeLabel.text = "Limit Order"
+            } else if order.type == .STOP {
+                orderTypeLabel.text = "Stop Order"
+            } else {
+                orderTypeLabel.text = "Pending Trade"
             }
+            if order.side == .BUY {
+                orderSideLabel.text = "Buy"
+                orderSideLabel.textColor = greenColor
+            } else if order.side == .SELL {
+                orderSideLabel.text = "Sell"
+                orderSideLabel.textColor = darkPinkColor
+            }
+            amountLabel.text = amountFormatter.stringFromNumber(order.amount)
             
-            let priceStr = priceFormattter.stringFromNumber(order.price)!
-            
-            let priceString = NSMutableAttributedString(string: priceStr)
-            priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 153.0/255.0, green: 153.0/255.0, blue: 153.0/255.0, alpha: 1.0), range: NSRange(location: 0, length: priceString.length))
-            priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSRange(location: priceString.length - length - toLast, length: length + toLast))
-            
-            priceLabel.attributedText = priceString
+            if order.price == 0 {
+                priceLabel.attributedText = NSMutableAttributedString(string: "Market")
+            } else {
+                let precision = instrument.pipPrecision
+                
+                priceFormattter.minimumFractionDigits = precision == nil ? instrument.decimals : precision! + 1
+                
+                var length = 2
+                var toLast = 1
+                if precision == 0 {
+                    toLast = 3
+                } else if precision == 1 {
+                    length = 3
+                }
+                
+                let priceStr = priceFormattter.stringFromNumber(order.price)!
+                
+                let priceString = NSMutableAttributedString(string: priceStr)
+                if precision != nil {
+                    priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 153.0/255.0, green: 153.0/255.0, blue: 153.0/255.0, alpha: 1.0), range: NSRange(location: 0, length: priceString.length))
+                    priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSRange(location: priceString.length - length - toLast, length: length + toLast))
+                } else {
+                    priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSRange(location: 0, length: priceString.length))
+                }
+                priceLabel.attributedText = priceString
+            }
         }
     }
 }

@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		4B0D82521C08A0C00028C822 /* ClosedPositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0D82511C08A0C00028C822 /* ClosedPositionView.swift */; };
 		4B0D82541C08A0D60028C822 /* ClosedPositionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B0D82531C08A0D60028C822 /* ClosedPositionView.xib */; };
-		4B69883A1C2999C600D695D7 /* TradableAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B6988391C2999C600D695D7 /* TradableAPI.framework */; };
-		4B69883B1C2999C600D695D7 /* TradableAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4B6988391C2999C600D695D7 /* TradableAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4B52DFA81CB7F34A009A88BF /* TradableAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B52DFA71CB7F34A009A88BF /* TradableAPI.framework */; };
+		4B52DFA91CB7F34A009A88BF /* TradableAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4B52DFA71CB7F34A009A88BF /* TradableAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4BDBA0231BC65531006719C0 /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDBA0221BC65531006719C0 /* AccountCell.swift */; };
 		4BDBA02E1BC68838006719C0 /* PositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDBA02D1BC68838006719C0 /* PositionView.swift */; };
 		4BDBA0301BC695A7006719C0 /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDBA02F1BC695A7006719C0 /* PortfolioView.swift */; };
@@ -46,7 +46,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4B69883B1C2999C600D695D7 /* TradableAPI.framework in Embed Frameworks */,
+				4B52DFA91CB7F34A009A88BF /* TradableAPI.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -56,7 +56,7 @@
 /* Begin PBXFileReference section */
 		4B0D82511C08A0C00028C822 /* ClosedPositionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosedPositionView.swift; sourceTree = "<group>"; };
 		4B0D82531C08A0D60028C822 /* ClosedPositionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClosedPositionView.xib; sourceTree = "<group>"; };
-		4B6988391C2999C600D695D7 /* TradableAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TradableAPI.framework; path = Frameworks/TradableAPI.framework; sourceTree = "<group>"; };
+		4B52DFA71CB7F34A009A88BF /* TradableAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TradableAPI.framework; path = Frameworks/TradableAPI.framework; sourceTree = "<group>"; };
 		4BDBA0221BC65531006719C0 /* AccountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
 		4BDBA02D1BC68838006719C0 /* PositionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionView.swift; sourceTree = "<group>"; };
 		4BDBA02F1BC695A7006719C0 /* PortfolioView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioView.swift; sourceTree = "<group>"; };
@@ -92,7 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B69883A1C2999C600D695D7 /* TradableAPI.framework in Frameworks */,
+				4B52DFA81CB7F34A009A88BF /* TradableAPI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,7 +147,7 @@
 		4BDF846F1C2AA58D00802CFD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4B6988391C2999C600D695D7 /* TradableAPI.framework */,
+				4B52DFA71CB7F34A009A88BF /* TradableAPI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -180,7 +180,7 @@
 				4BDC40A71BC2C2D400B928FA /* Frameworks */,
 				4BDC40A81BC2C2D400B928FA /* Resources */,
 				4BDFDE8B1BFCB5D4003A82DD /* Embed Frameworks */,
-				4BDFE0031C2844E9005EA358 /* ShellScript */,
+				4BDFE0031C2844E9005EA358 /* Run Script Stripping Simulator Slices */,
 			);
 			buildRules = (
 			);
@@ -202,7 +202,6 @@
 				TargetAttributes = {
 					4BDC40A91BC2C2D400B928FA = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 83RR8433N3;
 					};
 				};
 			};
@@ -242,13 +241,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4BDFE0031C2844E9005EA358 /* ShellScript */ = {
+		4BDFE0031C2844E9005EA358 /* Run Script Stripping Simulator Slices */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script Stripping Simulator Slices";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -325,10 +325,10 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -348,7 +348,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "77c59eac-1e35-48a7-81df-48d3c6d6bc9c";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -372,8 +372,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -389,7 +389,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "77c59eac-1e35-48a7-81df-48d3c6d6bc9c";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -402,8 +402,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Frameworks";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/PocketPortfolio/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -421,8 +425,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Frameworks";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)",
+				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/PocketPortfolio/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;

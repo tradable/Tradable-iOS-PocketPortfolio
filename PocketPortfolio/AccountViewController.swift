@@ -12,8 +12,6 @@ import TradableAPI
 
 class AccountViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    let tradable = Tradable.sharedInstance
-    
     @IBOutlet weak var accountSelector: AccountSelector!
     
     @IBOutlet weak var tableView: UITableView!
@@ -22,12 +20,14 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     var balance:Double?
     var equity:Double?
     var openPnL:Double?
-    var marginUse:Double?
+    var marginAmountUsed:Double?
     
     let cells = ["Currency", "Balance", "Equity", "Open PnL", "Margin used"]
     
     let numberFormatterCurrency = NSNumberFormatter()
     let numberFormatterPercent = NSNumberFormatter()
+    
+    var canSwitch = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +44,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.delegate = self
         tableView.dataSource = self
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "accountChanged", name: accountDidChangeNotificationKey, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AccountViewController.accountChanged), name: accountDidChangeNotificationKey, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -95,8 +95,8 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
                 cell.valueLabel.text = "..."
             }
         } else if indexPath.row == 4 {
-            if let marginUse = marginUse, equity = equity {
-                cell.valueLabel.text = numberFormatterPercent.stringFromNumber(marginUse/equity)
+            if let marginAmountUsed = marginAmountUsed, equity = equity {
+                cell.valueLabel.text = numberFormatterPercent.stringFromNumber(marginAmountUsed/equity)
             } else {
                 cell.valueLabel.text = "..."
             }
@@ -124,40 +124,58 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func clearData() {
-        accountSelector.accountLabel.text = nil
-        accountSelector.brokerLogo.image = nil
-        
-        currency = nil
-        balance = nil
-        marginUse = nil
-        equity = nil
-        openPnL = nil
-        updateData()
+        if (accountList.count > 1) {
+            accountSelector.accountLabel.text = nil
+            accountSelector.brokerLogo.image = nil
+            
+            currency = nil
+            balance = nil
+            marginAmountUsed = nil
+            equity = nil
+            openPnL = nil
+            updateData()
+            canSwitch = false
+        }
     }
     
     func changeToPrevAccount() {
-        clearData()
-        let idx = (accountIndex - 1) % accountList!.accounts.count
-        accountIndex = idx >= 0 ? idx : accountList!.accounts.count + idx
-        currentAccount = accountList!.accounts[accountIndex]
+        if canSwitch {
+            clearData()
+            let idx = (accountIndex - 1) % accountList.count
+            accountIndex = idx >= 0 ? idx : accountList.count + idx
+            currentAccount = accountList[accountIndex]
+        }
     }
     
     func changeToNextAccount() {
-        clearData()
-        accountIndex = (accountIndex + 1) % accountList!.accounts.count
-        currentAccount = accountList!.accounts[accountIndex]
+        if canSwitch {
+            clearData()
+            accountIndex = (accountIndex + 1) % accountList.count
+            currentAccount = accountList[accountIndex]
+        }
     }
     
     func accountChanged() {
+        print("Account changed.")
+        
+        if accountList.count > 1 {
+            accountSelector.rightButton.hidden = false
+            accountSelector.leftButton.hidden = false
+        } else {
+            accountSelector.rightButton.hidden = true
+            accountSelector.leftButton.hidden = true
+        }
+        
         if let currentAccount = currentAccount {
             
             accountSelector.accountLabel.text = currentAccount.displayName
-            currentAccount.getLightBrokerLogo({ (logoImg) -> Void in
+            currentAccount.brokerLogos.getLightBrokerLogo({ (logoImg) -> Void in
                 self.accountSelector.brokerLogo.image = logoImg
             })
             
             currency = currentAccount.currencyIsoCode
             updateData()
+            canSwitch = true
         }
     }
     
@@ -189,7 +207,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
                         cell.valueLabel.text = "..."
                     }
                 } else if indexPath.row == 4 {
-                    if let marginUse = marginUse, equity = equity {
+                    if let marginUse = marginAmountUsed, equity = equity {
                         cell.valueLabel.text = numberFormatterPercent.stringFromNumber(marginUse/equity)
                     } else {
                         cell.valueLabel.text = "..."
@@ -200,6 +218,6 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     @IBAction func addAccountTap(sender: UIButton) {
-        tradable.addAccount(appID, uri: customURI, brokerId: nil, webView: nil)
+        tradable.authenticateWithAppIdAndUri(appID, uri: customURI, webView: nil)
     }
 }

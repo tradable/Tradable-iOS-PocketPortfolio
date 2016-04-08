@@ -16,15 +16,7 @@ class PortfolioView: UIScrollView {
     var closedPositions:[String:ClosedPositionView] = [:]
     
     weak var portfolioDelegate:PortfolioViewDelegate?
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
+     
     override func layoutSubviews() {
         super.layoutSubviews()
         
@@ -57,7 +49,7 @@ class PortfolioView: UIScrollView {
     func addOrUpdatePosition(position: TradablePosition) {
         if positions[position.id] == nil {
             let pv = PositionView.loadFromNibNamed("PositionView") as! PositionView
-            pv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showPositionDetail:"))
+            pv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PortfolioView.showPositionDetail(_:))))
             positions[position.id] = pv
             addSubview(pv)
         }
@@ -74,7 +66,7 @@ class PortfolioView: UIScrollView {
     func addOrUpdateOrder(order: TradableOrder) {
         if orders[order.id] == nil {
             let ov = OrderView.loadFromNibNamed("OrderView") as! OrderView
-            ov.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "showEditOrder:"))
+            ov.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PortfolioView.showEditOrder(_:))))
             orders[order.id] = ov
             addSubview(ov)
         }

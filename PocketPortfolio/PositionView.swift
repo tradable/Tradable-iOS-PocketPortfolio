@@ -82,6 +82,8 @@ class PositionView: UIView {
         
         firstLine.image = drawLine()
         secondLine.image = drawLine()
+        
+        self.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width, height: 81.0)
     }
     
     override func layoutSubviews() {
@@ -95,79 +97,86 @@ class PositionView: UIView {
     func updatePosition(position: TradablePosition) {
         self.position = position
         
-        let instrument = findInstrumentForSymbol(position.symbol)!
-        
-        var hasProtections = false
-        
-        if let tp = position.takeProfit {
-            tpAmountLabel.text = "\(abs(getPipDistance(position.openPrice, to: tp, instrument: instrument)))"
-            hasProtections = true
-        } else if position.stopLoss != nil {
-            tpAmountLabel.text = "-"
-        }
-        
-        if let sl = position.stopLoss {
-            slAmountLabel.text = "\(abs(getPipDistance(position.openPrice, to: sl, instrument: instrument)))"
-            hasProtections = true
-        } else if position.takeProfit != nil {
-            slAmountLabel.text = "-"
-        }
-        
-        if hasProtections {
-            showProtections()
-        } else {
-            hideProtections()
-        }
-        
-        symbolLabel.text = findBrokerageAccountSymbolForSymbol(position.symbol)
-        
-        if position.side == .BUY {
-            directionLabel.text = "\u{25B2} Long"
-            directionLabel.textColor = greenColor
-        } else if position.side == .SELL {
-            directionLabel.text = "\u{25BC} Short"
-            directionLabel.textColor = darkPinkColor
-        }
-        
-        amountLabel.text = amountFormatter.stringFromNumber(position.amount)
-        
-        let precision = instrument.pipPrecision
-        
-        priceFormatter.minimumFractionDigits = precision + 1
-        var length = 2
-        var toLast = 1
-        if precision == 0 {
-            toLast = 3
-        } else if precision == 1 {
-            length = 3
-        }
-        
-        let priceStr = priceFormatter.stringFromNumber(position.openPrice)!
-        
-        let priceString = NSMutableAttributedString(string: priceStr)
-        priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 153.0/255.0, green: 153.0/255.0, blue: 153.0/255.0, alpha: 1.0), range: NSRange(location: 0, length: priceString.length))
-        priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSRange(location: priceString.length - length - toLast, length: length + toLast))
-        
-        priceLabel.attributedText = priceString
-        
-        if let openPnL = position.openProfit, currentPrice = position.lastPrice {
-            let positive = openPnL >= 0
-            if positive {
-                gradient.colors = [UIColor.clearColor().CGColor, greenColorTransparent]
-                pipsLabel.textColor = greenColorSemiTransparent
-                pnlLabel.textColor = greenColor
-            } else {
-                gradient.colors = [UIColor.clearColor().CGColor, pinkColorTransparent]
-                pipsLabel.textColor = pinkColorSemiTransparent
-                pnlLabel.textColor = darkPinkColor
-            }
-            pnlLabel.text = pnlFormatter.stringFromNumber(openPnL)
+        if let instrument = findInstrumentForSymbol(position.symbol) {
+            var hasProtections = false
             
-            if let pipsPnL = getProfitLossInPips(position.openPrice, currentPrice: currentPrice, symbol: position.symbol) {
-                pipsLabel.text = "(" + (positive ? "+" : "-") + "\(pipsPnL) pips)"
+            if let tp = position.takeProfit {
+                tpAmountLabel.text = "\(abs(getPipDistance(position.openPrice, to: tp, instrument: instrument)))"
+                hasProtections = true
+            } else if position.stopLoss != nil {
+                tpAmountLabel.text = "-"
             }
-        } else {
-            gradient.colors = []
+            
+            if let sl = position.stopLoss {
+                slAmountLabel.text = "\(abs(getPipDistance(position.openPrice, to: sl, instrument: instrument)))"
+                hasProtections = true
+            } else if position.takeProfit != nil {
+                slAmountLabel.text = "-"
+            }
+            
+            if hasProtections {
+                showProtections()
+            } else {
+                hideProtections()
+            }
+            
+            symbolLabel.text = findBrokerageAccountSymbolForSymbol(position.symbol)
+            
+            if position.side == .BUY {
+                directionLabel.text = "\u{25B2} Long"
+                directionLabel.textColor = greenColor
+            } else if position.side == .SELL {
+                directionLabel.text = "\u{25BC} Short"
+                directionLabel.textColor = darkPinkColor
+            }
+            
+            amountLabel.text = amountFormatter.stringFromNumber(position.amount)
+            
+            let precision = instrument.pipPrecision
+            
+            priceFormatter.minimumFractionDigits = precision == nil ? instrument.decimals : precision! + 1
+            var length = 2
+            var toLast = 1
+            if precision == 0 {
+                toLast = 3
+            } else if precision == 1 {
+                length = 3
+            }
+            
+            let priceStr = priceFormatter.stringFromNumber(position.openPrice)!
+            
+            let priceString = NSMutableAttributedString(string: priceStr)
+            if precision != nil {
+                priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 153.0/255.0, green: 153.0/255.0, blue: 153.0/255.0, alpha: 1.0), range: NSRange(location: 0, length: priceString.length))
+                priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSRange(location: priceString.length - length - toLast, length: length + toLast))
+            } else {
+                priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSRange(location: 0, length: priceString.length))
+            }
+            priceLabel.attributedText = priceString
+            
+            if !(instrument.type == .FOREX || instrument.type == .CFD) {
+                pipsLabel.hidden = true
+            }
+            
+            if let openPnL = position.openProfit, currentPrice = position.lastPrice {
+                let positive = openPnL >= 0
+                if positive {
+                    gradient.colors = [UIColor.clearColor().CGColor, greenColorTransparent]
+                    pipsLabel.textColor = greenColorSemiTransparent
+                    pnlLabel.textColor = greenColor
+                } else {
+                    gradient.colors = [UIColor.clearColor().CGColor, pinkColorTransparent]
+                    pipsLabel.textColor = pinkColorSemiTransparent
+                    pnlLabel.textColor = darkPinkColor
+                }
+                pnlLabel.text = pnlFormatter.stringFromNumber(openPnL)
+                
+                if let pipsPnL = getProfitLossInPips(position.openPrice, currentPrice: currentPrice, symbol: position.symbol) {
+                    pipsLabel.text = "(" + (positive ? "+" : "-") + "\(pipsPnL) pips)"
+                }
+            } else {
+                gradient.colors = []
+            }
         }
     }
     

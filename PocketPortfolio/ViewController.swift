@@ -10,7 +10,7 @@ import UIKit
 
 import TradableAPI
 
-class ViewController: UIViewController, TradableAPIDelegate {
+class ViewController: UIViewController, TradableAuthDelegate {
     
     @IBOutlet weak var logo: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -24,12 +24,10 @@ class ViewController: UIViewController, TradableAPIDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Tradable.sharedInstance.delegate = self
-
         self.leadingLogoConstraint.constant = (UIScreen.mainScreen().applicationFrame.width - logoWidthConstraint.constant)/2.0
         self.topLogoConstraint.constant = UIScreen.mainScreen().applicationFrame.height/2.0 - logoHeightConstraint.constant - 50.0
         self.view.layoutIfNeeded()
-
+        
         UIView.animateWithDuration(0.4, delay: 1.0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
             self.logoHeightConstraint.constant = 65.0
             self.logoWidthConstraint.constant = 65.0
@@ -51,29 +49,15 @@ class ViewController: UIViewController, TradableAPIDelegate {
                             }, completion: nil)
                 })
         }
+        
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
     @IBAction func signIn(sender: UIButton) {
-        Tradable.authenticateWithAppIdAndUri(appID, uri: customURI, webView: nil)
-    }
-    
-    func tradableReady() {
-        print("Tradable ready")
-        //load list of accounts, select first available, load instrument for this account and start updates
-        
-        tradable = Tradable.sharedInstance
-        
-        tradable.getAvailableAccounts { (accounts, error) -> Void in
-            if let accounts = accounts {
-                accountList = accounts
-                self.performSegueWithIdentifier("showTabBarController", sender: self)
-            } else {
-                print(error)
-            }
-        }
+        //Activate Tradable with last known tokens or ask a user to log in to his/her account
+        tradable.activateOrAuthenticate(appID, uri: customURI, webView: nil)
     }
 }

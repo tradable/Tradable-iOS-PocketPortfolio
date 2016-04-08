@@ -11,7 +11,7 @@ import UIKit
 import TradableAPI
 
 class ClosedPositionView: UIView {
-
+    
     @IBOutlet weak var symbolLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var closedPnLLabel: UILabel!
@@ -43,27 +43,6 @@ class ClosedPositionView: UIView {
     func setPositionDetail(position: TradablePosition) {
         symbolLabel.text = findBrokerageAccountSymbolForSymbol(position.symbol)
         
-        let instrument = findInstrumentForSymbol(position.symbol)!
-        
-        let precision = instrument.pipPrecision
-        
-        priceFormatter.minimumFractionDigits = precision + 1
-        var length = 2
-        var toLast = 1
-        if precision == 0 {
-            toLast = 3
-        } else if precision == 1 {
-            length = 3
-        }
-        
-        let priceStr = priceFormatter.stringFromNumber(position.closedPrice!)!
-        
-        let priceString = NSMutableAttributedString(string: priceStr)
-        priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 153.0/255.0, green: 153.0/255.0, blue: 153.0/255.0, alpha: 1.0), range: NSRange(location: 0, length: priceString.length))
-        priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSRange(location: priceString.length - length - toLast, length: length + toLast))
-        
-        priceLabel.attributedText = priceString
-        
         if let closedPnl = position.closedProfit {
             let positive = closedPnl >= 0
             if positive {
@@ -74,13 +53,8 @@ class ClosedPositionView: UIView {
                 closedPipsLabel.textColor = darkPinkColor
             }
             closedPnLLabel.text = pnlFormatter.stringFromNumber(closedPnl)
-            
-            if let pipsPnL = getProfitLossInPips(position.openPrice, currentPrice: position.closedPrice!, symbol: position.symbol) {
-                closedPipsLabel.text = "(" + (positive ? "+" : "-") + "\(pipsPnL) pips)"
-            }
         }
     }
-    
     
     
     class func drawWhiteLine() -> UIImage {

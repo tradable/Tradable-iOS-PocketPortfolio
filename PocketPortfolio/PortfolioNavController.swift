@@ -10,13 +10,13 @@ import UIKit
 
 import TradableAPI
 
-class PortfolioNavController: UINavigationController, TradableAPIDelegate, TradablePositionDetailDelegate, TradableEditOrderDelegate, TradableOrderEntryDelegate {
+class PortfolioNavController: UINavigationController, TradableEventsDelegate, TradablePositionDetailDelegate, TradableEditOrderDelegate, TradableOrderEntryDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         accountChanged()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "accountChanged", name: accountDidChangeNotificationKey, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PortfolioNavController.accountChanged), name: accountDidChangeNotificationKey, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -99,7 +99,7 @@ class PortfolioNavController: UINavigationController, TradableAPIDelegate, Trada
         (tabBarController as! TabBarController).deselectMiddleButton()
         if order != nil {
             tabBarController?.selectedViewController = tabBarController?.viewControllers?[1]
-            tradable.delegate = tabBarController?.viewControllers?[1] as? TradableAPIDelegate
+            tradable.delegate = tabBarController?.viewControllers?[1] as? TradableEventsDelegate
         }
     }
 

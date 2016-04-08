@@ -28,38 +28,68 @@ let instrumentsDidChangeNotificationKey = "com.tradable.pocketportfolio.instrume
 
 var tradable:Tradable = Tradable.sharedInstance
 
-let tradableSymbols = TradableSymbols()
+let tradableSymbols = TradableSymbols(symbols: [], includeMarginFactors: true)
 
-let basicSymbols = ["EURUSD", "USDJPY", "AUDCAD", "EURGBP", "GBPUSD"]
+let basicSymbols = ["EURUSD", "USDJPY", "AUDCAD", "EURGBP", "GBPUSD", "AAPL", "BABA", "BAC", "BIDU", "BRK.B", "FB", "GOOG", "KO", "MCD", "SAN"]
 
 var accountIndex:Int = 0
 
-var accountList:TradableAccountList? {
-    didSet {
-        if let accountList = accountList {
-            if !accountList.accounts.isEmpty {
-                if accountIndex >= accountList.accounts.count {
-                    accountIndex = accountList.accounts.count - 1
-                } else if accountIndex < 0 {
-                    accountIndex = 0
-                }
-                currentAccount = accountList.accounts[accountIndex]
-            }
+var accountList:[TradableAccount] = [TradableAccount]()
+
+func addAccount(account: TradableAccount) {
+    var i = 0
+    for _account in accountList {
+        if _account.uniqueId == account.uniqueId {
+            break
         }
+        i += 1
+    }
+    if i == accountList.count {
+        print("Account \(account.uniqueId) added.")
+        accountList.append(account)
+        
+        accountIndex = accountList.count - 1
+        
+        currentAccount = accountList[accountIndex]
     }
 }
 
+func removeAccount(account: TradableAccount) {
+    accountList = accountList.filter({
+        $0.uniqueId != account.uniqueId
+    })
+    print("Account \(account.uniqueId) removed.")
+    if accountList.count == 0 {
+        currentAccount = nil
+        tradable.createDemoAccount(TradableDemoAPIAuthenticationRequest(appId: appID, type: .FOREX), completion: { (accessToken, error) in
+            if let accessToken = accessToken {
+                tradable.activateAfterLaunchWithAccessToken(accessToken)
+            }
+        })
+    } else {
+        accountIndex = accountList.count - 1
+        currentAccount = accountList[accountIndex]
+    }
+
+}
+
 var currentAccount:TradableAccount? {
-    didSet {
-        tradable.getInstruments(currentAccount!) { (instruments, error) -> Void in
-            instrumentList = instruments
+    willSet {
+        if let ca = currentAccount {
+            tradable.stopUpdates(ca)
         }
         instrumentsForSymbols = [:]
         symbolsForUpdates = []
-
-        tradable.startUpdates(currentAccount!, updateType: .Full, frequency: .OneSecond, symbols: tradableSymbols)
-        
-        NSNotificationCenter.defaultCenter().postNotificationName(accountDidChangeNotificationKey, object: nil)
+    }
+    didSet {
+        if let ca = currentAccount {
+            tradable.getInstruments(ca) { (instruments, error) -> Void in
+                instrumentList = instruments
+            }
+            tradable.startUpdates(ca, updateType: .Full, frequency: .OneSecond, symbols: tradableSymbols)
+            
+            NSNotificationCenter.defaultCenter().postNotificationName(accountDidChangeNotificationKey, object: nil)
+        }
     }
 }
 
@@ -72,7 +102,9 @@ var instrumentList:[TradableInstrument]? {
 var symbolsForUpdates:[String] = [] {
     didSet {
         tradableSymbols.symbols = symbolsForUpdates
-        tradable.setSymbolsForUpdates(tradableSymbols)
+        if let currentAccount = currentAccount {
+            tradable.setSymbolsForUpdates(currentAccount, symbols: tradableSymbols)
+        }
     }
 }
 
@@ -87,17 +119,6 @@ func removeSymbolForTemporaryUpdates() {
         }
         lastSymbolForTemporaryUpdates = nil
     }
-}
-
-//adding selected symbol for temporary updates (from Trade View) to symbolsForUpdates list; removes last used symbol, if there was a different one
-func addSymbolForTemporaryUpdates(symbol: String) {
-    if let lastUsed = lastSymbolForTemporaryUpdates {
-        if lastUsed != symbol {
-            removeSymbolForTemporaryUpdates()
-        }
-    }
-    lastSymbolForTemporaryUpdates = symbol
-    symbolsForUpdates.append(symbol)
 }
 
 //reverse symbol mapping
@@ -139,19 +160,31 @@ func findInstrumentForSymbol(symbol: String) -> TradableInstrument? {
 
 //calculating pips
 func getPipDistance(from: Double, to: Double, instrument: TradableInstrument) -> Int {
-    return Int(round((to - from) * pow(10.0, Double(instrument.pipPrecision))))
+    var precision = instrument.pipPrecision
+    if precision == nil {
+        precision = instrument.decimals
+    }
+    return Int(round((to - from) * pow(10.0, Double(precision!))))
 }
 
 func getProfitLossInPips(openPrice: Double, currentPrice: Double, symbol: String) -> Int? {
     if let instrument = findInstrumentForSymbol(symbol) {
         let priceDifference = abs(currentPrice - openPrice)
-        return Int(round(priceDifference * pow(10.0, Double(instrument.pipPrecision))))
+        var precision = instrument.pipPrecision
+        if precision == nil {
+            precision = instrument.decimals
+        }
+        return Int(round(priceDifference * pow(10.0, Double(precision!))))
     }
     return nil
 }
 
 func getPriceFromPipDistance(from: Double, distance: Double, instrument: TradableInstrument) -> Double {
-    return from + distance * pow(10.0, -Double(instrument.pipPrecision))
+    var precision = instrument.pipPrecision
+    if precision == nil {
+        precision = instrument.decimals
+    }
+    return from + distance * pow(10.0, -Double(precision!))
 }
 
 //EXTENSIONS

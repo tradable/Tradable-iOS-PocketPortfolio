@@ -10,11 +10,14 @@ import UIKit
 import TradableAPI
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, TradableAuthDelegate {
     
     var window:UIWindow?
+    
+    var shouldTransition = true
 
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+        Tradable.sharedInstance.authDelegate = self
         
         Tradable.sharedInstance.activateAfterLaunchWithURL(url)
         
@@ -23,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        Tradable.sharedInstance.authDelegate = self
         
         if let url = launchOptions?[UIApplicationLaunchOptionsURLKey] as? NSURL {
             Tradable.sharedInstance.activateAfterLaunchWithURL(url)
@@ -51,5 +55,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func tradableReady(forAccount: TradableAccount) {
+        //Tradable is ready to be used, segue to the next controller (but only once)
+        if let vc = window?.rootViewController where vc is ViewController && shouldTransition {
+            shouldTransition = false
+            window?.rootViewController?.performSegueWithIdentifier("showTabBarController", sender: self)
+        }
+        
+        //add account to a list
+        addAccount(forAccount)
+    }
+    
+    func tradableAuthenticationError(error: TradableError) {
+        //handle auth error
+        if let acc = error.forAccount {
+            removeAccount(acc)
+        }
     }
 }

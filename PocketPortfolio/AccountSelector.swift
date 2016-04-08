@@ -19,7 +19,7 @@ class AccountSelector: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        if accountList!.accounts.count <= 1 {
+        if accountList.count <= 1 {
             leftButton.hidden = true
             rightButton.hidden = true
         } else {
