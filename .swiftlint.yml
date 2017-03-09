@@ -1,0 +1,9 @@
+disabled_rules: # rule identifiers to exclude from running
+  - force_cast
+  - force_try
+  - line_length
+  - function_body_length
+  - cyclomatic_complexity
+  - variable_name
+excluded: # paths to ignore during linting. Takes precedence over `included`.
+  - Pods

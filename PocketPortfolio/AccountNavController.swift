@@ -1,6 +1,6 @@
 //
 //  AccountNavController.swift
-//  TradableExampleApp
+//  PocketPortfolio
 //
 //  Created by Tradable ApS on 14/10/15.
 //  Copyright © 2015 Tradable ApS. All rights reserved.
@@ -19,18 +19,14 @@ class AccountNavController: UINavigationController, TradableEventsDelegate, Trad
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
+
     func tradableAccountMetricsUpdated(accountMetrics: TradableAccountMetrics) {
         let accountVC = self.viewControllers[0] as! AccountViewController
-        accountVC.balance = accountMetrics.balance
-        accountVC.equity = accountMetrics.equity
-        accountVC.openPnL = accountMetrics.openProfit
-        accountVC.marginAmountUsed = accountMetrics.marginAmountUsed
+        accountVC.metrics = accountMetrics
         accountVC.updateData()
     }
-    
+
     func tradableOrderEntryDismissed(order: TradableOrder?) {
-        tradable.delegate = self
         (tabBarController as! TabBarController).deselectMiddleButton()
     }
 }

@@ -1,6 +1,6 @@
 //
-//  SecondViewController.swift
-//  TradableExampleApp
+//  PortfolioViewController.swift
+//  PocketPortfolio
 //
 //  Created by Tradable ApS on 05/10/15.
 //  Copyright © 2015 Tradable ApS. All rights reserved.
@@ -14,54 +14,54 @@ class PortfolioViewController: UIViewController, PortfolioViewDelegate {
     @IBOutlet weak var portfolioView: PortfolioView!
     @IBOutlet weak var emptyPortfolioLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-        
+
     var waiting = true {
         didSet {
             if waiting == true {
-                portfolioView?.hidden = true
-                emptyPortfolioLabel?.hidden = true
-                activityIndicator?.hidden = false
+                portfolioView?.isHidden = true
+                emptyPortfolioLabel?.isHidden = true
+                activityIndicator?.isHidden = false
                 activityIndicator?.startAnimating()
             }
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         portfolioView.portfolioDelegate = self
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
+
     func clearPortfolio() {
         portfolioView?.clear()
     }
-    
-    func showPositionDetail(position: TradablePosition) {
-        tradable.presentPositionDetail(currentAccount!, position: position, delegate: self.navigationController as! PortfolioNavController, presentingViewController: self.navigationController!, presentationStyle: UIModalPresentationStyle.OverCurrentContext)
+
+    func showPositionDetails(_ position: TradablePosition) {
+        self.navigationController?.tradablePresentPositionDetail(for: currentAccount!, with: position, delegate: nil, presentationStyle: UIModalPresentationStyle.overCurrentContext)
     }
-    
-    func showEditOrder(order: TradableOrder) {
-        tradable.presentEditOrder(currentAccount!, order: order, delegate: self.navigationController as! PortfolioNavController, presentingViewController: self.navigationController!, presentationStyle: UIModalPresentationStyle.OverCurrentContext)
+
+    func showEditOrder(_ order: TradableOrder) {
+        self.navigationController?.tradablePresentEditOrder(for: currentAccount!, with: order, delegate: nil, presentationStyle: UIModalPresentationStyle.overCurrentContext)
     }
-    
-    func isPortfolioEmpty(empty: Bool) {
+
+    func isPortfolioEmpty(_ empty: Bool) {
         if waiting {
-            portfolioView.hidden = true
-            emptyPortfolioLabel.hidden = true
-            activityIndicator.hidden = false
+            portfolioView.isHidden = true
+            emptyPortfolioLabel.isHidden = true
+            activityIndicator.isHidden = false
             activityIndicator.startAnimating()
         } else {
             if empty {
-                portfolioView.hidden = true
-                emptyPortfolioLabel.hidden = false
+                portfolioView.isHidden = true
+                emptyPortfolioLabel.isHidden = false
                 activityIndicator.stopAnimating()
             } else {
-                portfolioView.hidden = false
-                emptyPortfolioLabel.hidden = true
+                portfolioView.isHidden = false
+                emptyPortfolioLabel.isHidden = true
                 activityIndicator.stopAnimating()
             }
         }

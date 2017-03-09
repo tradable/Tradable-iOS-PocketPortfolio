@@ -11,7 +11,7 @@
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "4A08893A-6217-4307-ACDD-314737BA9CE8",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "8392B4A9B1B2F5D08C5E1A73B1BCB890A4C55ACD" : "TradableExampleApp\/",
-    "E843753FFC79020074C0D30E2B9B466F3BB0F14C" : "PocketPortfolio\/",
+    "E843753FFC79020074C0D30E2B9B466F3BB0F14C" : "Tradable-iOS-PocketPortfolio\/",
     "CA8033207C97BCC1A28C8D52CF04127A99E6AC0F" : "..\/TradableAPI"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "PocketPortfolio",

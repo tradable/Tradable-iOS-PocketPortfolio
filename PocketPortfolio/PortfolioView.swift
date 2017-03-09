@@ -1,6 +1,6 @@
 //
 //  PortfolioView.swift
-//  TradableExampleApp
+//  PocketPortfolio
 //
 //  Created by Tradable ApS on 08/10/15.
 //  Copyright © 2015 Tradable ApS. All rights reserved.
@@ -11,17 +11,17 @@ import UIKit
 import TradableAPI
 
 class PortfolioView: UIScrollView {
-    var positions:[String:PositionView] = [:]
-    var orders:[String:OrderView] = [:]
-    var closedPositions:[String:ClosedPositionView] = [:]
-    
-    weak var portfolioDelegate:PortfolioViewDelegate?
-     
+    var positions: [String: PositionView] = [:]
+    var orders: [String: OrderView] = [:]
+    var closedPositions: [String: ClosedPositionView] = [:]
+
+    weak var portfolioDelegate: PortfolioViewDelegate?
+
     override func layoutSubviews() {
         super.layoutSubviews()
-        
+
         var empty = true
-        var fromTop:CGFloat = 10.0
+        var fromTop: CGFloat = 10.0
         for positionView in positions.values {
             positionView.frame.origin = CGPoint(x: 10.0, y: fromTop)
             positionView.frame.size.width = bounds.width - 20.0
@@ -40,13 +40,13 @@ class PortfolioView: UIScrollView {
             fromTop += (closedPositionView.frame.height + 10.0)
             empty = false
         }
-        
+
         contentSize = CGSize(width: self.frame.width, height: fromTop)
-        
+
         portfolioEmpty(empty)
     }
-    
-    func addOrUpdatePosition(position: TradablePosition) {
+
+    func addOrUpdatePosition(_ position: TradablePosition) {
         if positions[position.id] == nil {
             let pv = PositionView.loadFromNibNamed("PositionView") as! PositionView
             pv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PortfolioView.showPositionDetail(_:))))
@@ -55,15 +55,15 @@ class PortfolioView: UIScrollView {
         }
         positions[position.id]?.updatePosition(position)
     }
-    
-    func removePosition(id: String) {
+
+    func removePosition(_ id: String) {
         if let position = positions[id] {
             position.removeFromSuperview()
             positions[id] = nil
         }
     }
-    
-    func addOrUpdateOrder(order: TradableOrder) {
+
+    func addOrUpdateOrder(_ order: TradableOrder) {
         if orders[order.id] == nil {
             let ov = OrderView.loadFromNibNamed("OrderView") as! OrderView
             ov.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(PortfolioView.showEditOrder(_:))))
@@ -72,44 +72,44 @@ class PortfolioView: UIScrollView {
         }
         orders[order.id]?.updateOrder(order)
     }
-    
-    func removeOrder(id: String) {
+
+    func removeOrder(_ id: String) {
         if let order = orders[id] {
             order.removeFromSuperview()
             orders[id] = nil
         }
     }
-    
-    func addClosedPosition(position: TradablePosition) {
+
+    func addClosedPosition(_ position: TradablePosition) {
         if closedPositions[position.id] == nil {
             let cpv = ClosedPositionView.loadFromNibNamed("ClosedPositionView") as! ClosedPositionView
-            cpv.setPositionDetail(position)
+            cpv.setPositionDetails(position)
             closedPositions[position.id] = cpv
             addSubview(cpv)
         }
     }
-    
-    func showPositionDetail(sender: UITapGestureRecognizer) {
-        if sender.state == .Ended {
-            portfolioDelegate?.showPositionDetail((sender.view as! PositionView).position!)
+
+    func showPositionDetail(_ sender: UITapGestureRecognizer) {
+        if sender.state == .ended {
+            portfolioDelegate?.showPositionDetails((sender.view as! PositionView).position!)
         }
     }
-    
-    func showEditOrder(sender: UITapGestureRecognizer) {
-        if sender.state == .Ended {
+
+    func showEditOrder(_ sender: UITapGestureRecognizer) {
+        if sender.state == .ended {
             portfolioDelegate?.showEditOrder((sender.view as! OrderView).order!)
         }
     }
-    
-    func portfolioEmpty(empty: Bool) {
+
+    func portfolioEmpty(_ empty: Bool) {
         portfolioDelegate?.isPortfolioEmpty(empty)
     }
-    
+
     func clear() {
         closedPositions = [:]
         positions = [:]
         orders = [:]
-        self.subviews.forEach({ $0.removeFromSuperview() })
+        self.subviews.forEach { $0.removeFromSuperview() }
         layoutSubviews()
     }
 }

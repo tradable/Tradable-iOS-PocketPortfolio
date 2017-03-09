@@ -1,6 +1,6 @@
 //
 //  WatchlistViewController.swift
-//  TradableExampleApp
+//  PocketPortfolio
 //
 //  Created by Tradable ApS on 05/10/15.
 //  Copyright © 2015 Tradable ApS. All rights reserved.
@@ -10,106 +10,114 @@ import UIKit
 
 import TradableAPI
 
-class WatchlistViewController: UITableViewController, TradableInstrumentSelectorDelegate {
-    var symbols:[String] = [] {
-        didSet {
-            if canSave {
-                saveWatchlist()
-            }
-        }
-    }
-    
-    var pricesForSymbols:[String:(ask:Double?, bid:Double?, spread:Double?)] = [:]
-    
-    let numberFormatter = NSNumberFormatter()
-    let priceFormatter = NSNumberFormatter()
-    
-    let fileManager = NSFileManager.defaultManager()
-    
+import SwiftyJSON
+
+class WatchlistViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TradableInstrumentSelectorDelegate {
+
+    @IBOutlet weak var addInstrumentsLabel: UILabel!
+
+    @IBOutlet weak var tableView: UITableView!
+
+    var instrumentIds: [String] = []
+    var pricesForInstrumentIds: [String: TradablePrice] = [:]
+
+    let numberFormatter = NumberFormatter()
+    let askPriceFormatter = NumberFormatter()
+    let bidPriceFormatter = NumberFormatter()
+
+    let fileManager = FileManager.default
+
     var watchlistsFilePath = ""
-    
+
     var canSave = false
-    
+
     var canUpdate = false
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //read from file
-        if let appSupportDirectory:String = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true).first {
-            if !fileManager.fileExistsAtPath(appSupportDirectory) {
-                do {
-                    try fileManager.createDirectoryAtPath(appSupportDirectory, withIntermediateDirectories: true, attributes: nil)
-                } catch {
-                    print("Unable to create app support directory.")
-                }
-            }
-            
-            watchlistsFilePath = appSupportDirectory.stringByAppendingString("/watchlists.json")
-            
-            if !fileManager.fileExistsAtPath(watchlistsFilePath) {
-                fileManager.createFileAtPath(watchlistsFilePath, contents: nil, attributes: nil)
-            }
-        }
-        
-        instrumentsChanged()
-        
-        self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        
-        numberFormatter.numberStyle = .DecimalStyle
+
+        tableView.delegate = self
+        tableView.dataSource = self
+
+        checkOrCreateWatchlistFile()
+
+        accountChanged()
+
+        self.navigationItem.rightBarButtonItem = self.editButtonItem
+
+        numberFormatter.numberStyle = .decimal
         numberFormatter.maximumFractionDigits = 1
         numberFormatter.minimumFractionDigits = 1
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(WatchlistViewController.instrumentsChanged), name: instrumentsDidChangeNotificationKey, object: nil)
+
+        askPriceFormatter.numberStyle = NumberFormatter.Style.decimal
+        bidPriceFormatter.numberStyle = NumberFormatter.Style.decimal
+
+        NotificationCenter.default.addObserver(self, selector: #selector(WatchlistViewController.accountChanged), name: NSNotification.Name(rawValue: accountDidChangeNotificationKey), object: nil)
     }
-    
+
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
-    
+
+    func checkOrCreateWatchlistFile() {
+        guard let appSupportDirectory: String = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first else { return }
+
+        if !fileManager.fileExists(atPath: appSupportDirectory) {
+            do {
+                try fileManager.createDirectory(atPath: appSupportDirectory, withIntermediateDirectories: true, attributes: nil)
+            } catch {
+                print("Unable to create app support directory.")
+            }
+        }
+
+        watchlistsFilePath = appSupportDirectory + "/watchlists.json"
+
+        if !fileManager.fileExists(atPath: watchlistsFilePath) {
+            fileManager.createFile(atPath: watchlistsFilePath, contents: nil, attributes: nil)
+        }
+    }
+
     func saveWatchlist() {
+        guard canSave else { return }
         do {
-            var contents = ["version" : "1.0" as AnyObject]
-            
-            var watchlists = [String:[String]]()
-            
+            var contents: [String: Any] = ["version": "2.0"]
+
+            var watchlists = [String: [String]]()
+
             let data = try String(contentsOfFile: watchlistsFilePath)
-            if let jsonData = data.dataUsingEncoding(NSUTF8StringEncoding) {
+            if let jsonData = data.data(using: String.Encoding.utf8) {
                 let jsonRead = JSON(data: jsonData)
                 if let watchlistsRead = jsonRead["watchlists"].array {
                     for watchlistRead in watchlistsRead {
                         for (key, value) in watchlistRead.dictionaryValue {
-                            watchlists[key] = value.arrayValue.map{ $0.stringValue }
+                            watchlists[key] = value.arrayValue.map { $0.stringValue }
                         }
                     }
                 }
             }
-            
-            watchlists[currentAccount!.uniqueId] = symbols
-            
+
+            watchlists[currentAccount!.id] = instrumentIds
+
             contents["watchlists"] = [watchlists]
-            
+
             let json = JSON(contents)
-            
-            try json.rawString()!.writeToFile(watchlistsFilePath, atomically: false, encoding: NSUTF8StringEncoding)
-        }
-        catch {
+
+            try json.rawString()!.write(toFile: watchlistsFilePath, atomically: false, encoding: String.Encoding.utf8)
+        } catch {
             print("Unable to write to file.")
         }
     }
-    
-    func loadWatchlist() {
-        symbols = []
+
+    func loadWatchlist() -> [String] {
+        var loadedInstrumentIds: [String] = []
         do {
             let data = try String(contentsOfFile: watchlistsFilePath)
-            if let jsonData = data.dataUsingEncoding(NSUTF8StringEncoding) {
+            if let jsonData = data.data(using: String.Encoding.utf8) {
                 let jsonRead = JSON(data: jsonData)
-                if let watchlistsRead = jsonRead["watchlists"].array {
-                    for watchlistRead in watchlistsRead {
-                        for (key, value) in watchlistRead.dictionaryValue {
-                            if key == currentAccount!.uniqueId {
-                                symbols = value.arrayValue.map{ $0.stringValue }
-                            }
+                if jsonRead["version"] == "2.0" {
+                    if let watchlistsRead = jsonRead["watchlists"].array {
+                        for watchlistRead in watchlistsRead {
+                            loadedInstrumentIds = watchlistRead[currentAccount!.id].arrayValue.map { $0.stringValue }
                         }
                     }
                 }
@@ -117,197 +125,216 @@ class WatchlistViewController: UITableViewController, TradableInstrumentSelector
         } catch {
             print("Unable to open file.")
         }
-        
+
         canSave = true
+
+        return loadedInstrumentIds
     }
-    
-    func instrumentsChanged() {
+
+    func accountChanged() {
+        //figure out how to prevent from crashing when acc changes too fast
         canUpdate = false
         canSave = false
-        
-        loadWatchlist()
-        
-        var tempSymbols = [String]()
-        
-        if let instrumentList = instrumentList {
-            for instrument in instrumentList {
-                if symbols.isEmpty {
-                    if basicSymbols.contains(instrument.symbol) {
-                        symbolsForUpdates.append(instrument.symbol)
-                        tempSymbols.append(instrument.symbol)
-                    }
-                } else {
-                    if symbols.contains(instrument.symbol) {
-                        symbolsForUpdates.append(instrument.symbol)
-                    }
+
+        instrumentIds = []
+        pricesForInstrumentIds = [:]
+
+        let loadedInstrumentIds = loadWatchlist()
+        print(loadedInstrumentIds)
+
+        if loadedInstrumentIds.isEmpty {
+            addInstrumentsLabel.isHidden = false
+        } else {
+            addInstrumentsLabel.isHidden = true
+            instrumentIds = loadedInstrumentIds
+            instrumentIdsForUpdates = instrumentIds
+            currentAccount!.getInstruments(with: TradableInstrumentSearchRequest(instrumentIds: loadedInstrumentIds), completionHandler: { (instrumentList, _) in
+                guard let instrumentList = instrumentList else { return }
+                var index = 0
+                for instrument in instrumentList.instruments {
+                    cachedInstruments[instrument.id] = instrument
+                    (self.tableView?.cellForRow(at: IndexPath(row: index, section: 0)) as! WatchlistCell).symbolLabel.text = instrument.brokerageAccountSymbol
+                    index += 1
                 }
-            }
+            })
         }
-        
-        if symbols.isEmpty {
-            symbols = tempSymbols
-        }
-        
-        tableView.reloadData()
+
         canUpdate = true
+        tableView.reloadData()
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        tableView.setEditing(editing, animated: animated)
+    }
+
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return symbols.count
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return instrumentIds.count
     }
-    
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("watchlistCell", forIndexPath: indexPath) as! WatchlistCell
-        
-        let symbol = symbols[indexPath.row]
-        
-        cell.symbolLabel.text = findBrokerageAccountSymbolForSymbol(symbol)
-        
-        cell.askButton.addTarget(self, action: #selector(WatchlistViewController.showTradeView(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "watchlistCell", for: indexPath) as! WatchlistCell
+
+        let instrumentId = instrumentIds[indexPath.row]
+
+        cell.symbolLabel.text = cachedInstruments[instrumentId]?.brokerageAccountSymbol
+
+        cell.askButton.addTarget(self, action: #selector(WatchlistViewController.showTradeView(_:)), for: UIControlEvents.touchUpInside)
         cell.askButton.tag = indexPath.row * 2
-        cell.bidButton.addTarget(self, action: #selector(WatchlistViewController.showTradeView(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        cell.bidButton.addTarget(self, action: #selector(WatchlistViewController.showTradeView(_:)), for: UIControlEvents.touchUpInside)
         cell.bidButton.tag = indexPath.row * 2 + 1
-        
-        cell.askButton.setAttributedTitle(NSAttributedString(string: "..."), forState: UIControlState.Normal)
+
+        cell.askButton.setAttributedTitle(NSAttributedString(string: "..."), for: UIControlState())
         cell.spreadLabel.text = "..."
-        cell.bidButton.setAttributedTitle(NSAttributedString(string: "..."), forState: UIControlState.Normal)
-        
-        cell.backgroundColor = UIColor.clearColor()
-        
+        cell.bidButton.setAttributedTitle(NSAttributedString(string: "..."), for: UIControlState())
+
+        cell.backgroundColor = UIColor.clear
+
         return cell
     }
-    
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60.0
     }
-    
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            pricesForSymbols[symbols[indexPath.row]] = nil
-            symbols.removeAtIndex(indexPath.row)
-            symbolsForUpdates = symbols
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            //do not remove instrument, leave it cached in case user adds it again or has more than one entry for this instrument id
+            instrumentIds.remove(at: indexPath.row)
+            saveWatchlist()
+            instrumentIdsForUpdates = instrumentIds
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            if instrumentIds.isEmpty {
+                addInstrumentsLabel.isHidden = false
+            }
         }
     }
-    
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-        let itemToMove = symbols[fromIndexPath.row]
-        symbols.removeAtIndex(fromIndexPath.row)
-        symbols.insert(itemToMove, atIndex: toIndexPath.row)
+
+    func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to toIndexPath: IndexPath) {
+        let itemToMove = instrumentIds[fromIndexPath.row]
+        instrumentIds.remove(at: fromIndexPath.row)
+        instrumentIds.insert(itemToMove, at: toIndexPath.row)
+        saveWatchlist()
     }
-    
-    func tradableInstrumentSelectorDismissed(instrument: TradableInstrument?) {
-        if let instrument = instrument {
-            let newIndexPath = NSIndexPath(forRow: symbols.count, inSection: 0)
-            symbols.append(instrument.symbol)
-            symbolsForUpdates = symbols
-            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+
+    func tradableInstrumentSelectorDismissed(instrumentSearchResult: TradableInstrumentSearchResult?) {
+        if let instrumentSearchResult = instrumentSearchResult {
+            let newIndexPath = IndexPath(row: instrumentIds.count, section: 0)
+            instrumentIds.append(instrumentSearchResult.instrumentId)
+            saveWatchlist()
+            instrumentIdsForUpdates = instrumentIds
+            addInstrumentsLabel.isHidden = true
+            currentAccount!.getInstruments(with: TradableInstrumentSearchRequest(instrumentIds: [instrumentSearchResult.instrumentId]), completionHandler: { (instrumentList, _) in
+                self.tableView?.insertRows(at: [newIndexPath], with: .bottom)
+                cachedInstruments[instrumentSearchResult.instrumentId] = instrumentList?.instruments.first
+                (self.tableView?.cellForRow(at: newIndexPath) as! WatchlistCell).symbolLabel.text = instrumentList?.instruments.first?.brokerageAccountSymbol
+            })
         }
     }
-    
-    func showTradeView(sender: UIButton) {
-        if !tableView.editing {
-            let symbol = (sender.superview!.superview! as! WatchlistCell).symbolLabel.text!
-            let side:TradableOrderSide = sender.tag % 2 == 0 ? .BUY : .SELL
-            
-            tradable.presentOrderEntry(currentAccount!, symbol: symbol, side: side, delegate: self.navigationController as! WatchlistNavController, presentingViewController: self.navigationController!, presentationStyle: UIModalPresentationStyle.OverCurrentContext)
+
+    func showTradeView(_ sender: UIButton) {
+        if !tableView.isEditing {
+            let instrumentId = instrumentIds[(tableView.indexPath(for: sender.superview!.superview! as! WatchlistCell)!.row)]
+            let side: TradableOrderSide = sender.tag % 2 == 0 ? .buy : .sell
+
+           self.tradablePresentOrderEntry(for: currentAccount!, with: cachedInstruments[instrumentId], withSide: side, delegate: self.navigationController as! WatchlistNavController, presentationStyle: UIModalPresentationStyle.overCurrentContext)
             (self.navigationController!.tabBarController as! TabBarController).selectMiddleButton()
         }
     }
-    
+
     func updateData() {
         if canUpdate {
-            if let indexPaths = tableView?.indexPathsForVisibleRows {
-                for indexPath in indexPaths {
-                    let cell = tableView.cellForRowAtIndexPath(indexPath) as! WatchlistCell
-                    
-                    let symbol = symbols[indexPath.row]
-                    
-                    if let instrument = findInstrumentForSymbol(symbol) {
-                        
-                        priceFormatter.numberStyle = NSNumberFormatterStyle.DecimalStyle
-                        priceFormatter.minimumFractionDigits = instrument.pipPrecision == nil ? instrument.decimals : instrument.pipPrecision! + 1
-                        
-                        let precision = instrument.pipPrecision == nil ? 0 : instrument.pipPrecision! + 1
-                        
-                        var length = 2
-                        var toLast = 1
-                        if precision == 0 {
-                            toLast = 3
-                        } else if precision == 1 {
-                            length = 3
-                        }
-                        
-                        if let ask = pricesForSymbols[symbol]?.ask {
-                            let askButton = cell.askButton
-                            if let prevAskText = askButton.titleLabel!.text {
-                                if let prevAsk = priceFormatter.numberFromString(prevAskText)?.doubleValue {
-                                    if prevAsk - ask > EPSILON {
-                                        askButton.fadeDown()
-                                    } else if ask - prevAsk > EPSILON {
-                                        askButton.fadeUp()
-                                    }
-                                }
+            guard let indexPaths = tableView?.indexPathsForVisibleRows else { return }
+
+            for indexPath in indexPaths {
+                let cell = tableView.cellForRow(at: indexPath) as! WatchlistCell
+
+                defer { cell.backgroundColor = UIColor.clear }
+
+                let instrumentId = instrumentIds[indexPath.row]
+
+                guard let instrument = cachedInstruments[instrumentId] else { return }
+
+                let precision = instrument.pipPrecision
+
+                var length = 2
+                var toLast = 1
+                if precision == 0 {
+                    toLast = 3
+                } else if precision == 1 {
+                    length = 3
+                }
+
+                if let ask = pricesForInstrumentIds[instrumentId]?.ask {
+                    askPriceFormatter.minimumFractionDigits = precision == nil ? try! instrument.getPriceDecimals(forPrice: ask) : precision! + 1
+
+                    let askButton = cell.askButton!
+                    if let prevAskText = askButton.titleLabel!.text {
+                        if let prevAsk = askPriceFormatter.number(from: prevAskText)?.doubleValue {
+                            if prevAsk - ask > EPSILON {
+                                askButton.fadePink()
+                            } else if ask - prevAsk > EPSILON {
+                                askButton.fadeGreen()
                             }
-                            let priceStr = priceFormatter.stringFromNumber(ask)!
-                            
-                            let priceString = NSMutableAttributedString(string: priceStr)
-                            if instrument.pipPrecision != nil {
-                                priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.5), range: NSRange(location: 0, length: priceString.length))
-                                priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSRange(location: priceString.length - length - toLast, length: length + toLast))
-                            } else {
-                                 priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSRange(location: 0, length: priceString.length))
-                            }
-                            askButton.setAttributedTitle(priceString, forState: UIControlState.Normal)
                         }
-                        
-                        if let bid = pricesForSymbols[symbol]?.bid {
-                            let bidButton = cell.bidButton
-                            if let prevBidText = bidButton.titleLabel!.text  {
-                                if let prevBid = priceFormatter.numberFromString(prevBidText)?.doubleValue {
-                                    if prevBid - bid > EPSILON {
-                                        bidButton.fadeDown()
-                                    } else if bid - prevBid > EPSILON {
-                                        bidButton.fadeUp()
-                                    }
-                                }
-                            }
-                            let priceStr = priceFormatter.stringFromNumber(bid)!
-                            
-                            let priceString = NSMutableAttributedString(string: priceStr)
-                            if instrument.pipPrecision != nil {
-                                priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.5), range: NSRange(location: 0, length: priceString.length))
-                                priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSRange(location: priceString.length - length - toLast, length: length + toLast))
-                            } else {
-                                priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSRange(location: 0, length: priceString.length))
-                            }
-                            bidButton.setAttributedTitle(priceString, forState: UIControlState.Normal)
-                        }
-                        
-                        if let spread = pricesForSymbols[symbol]?.spread {
-                            cell.spreadLabel.text = numberFormatter.stringFromNumber(spread)
-                        }
-                        
                     }
-                    cell.backgroundColor = UIColor.clearColor()
+                    let priceStr = askPriceFormatter.string(from: NSNumber(value: ask))!
+
+                    let priceString = NSMutableAttributedString(string: priceStr)
+                    if instrument.pipPrecision != nil {
+                        priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.5), range: NSRange(location: 0, length: priceString.length))
+                        priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: max(0, priceString.length - length - toLast), length: min(priceString.length, length + toLast)))
+                    } else {
+                        priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: priceString.length))
+                    }
+                    askButton.setAttributedTitle(priceString, for: UIControlState())
+                }
+
+                if let bid = pricesForInstrumentIds[instrumentId]?.bid {
+                    bidPriceFormatter.minimumFractionDigits = precision == nil ? try! instrument.getPriceDecimals(forPrice: bid) : precision! + 1
+
+                    let bidButton = cell.bidButton!
+                    if let prevBidText = bidButton.titleLabel!.text {
+                        if let prevBid = askPriceFormatter.number(from: prevBidText)?.doubleValue {
+                            if prevBid - bid > EPSILON {
+                                bidButton.fadePink()
+                            } else if bid - prevBid > EPSILON {
+                                bidButton.fadeGreen()
+                            }
+                        }
+                    }
+                    let priceStr = bidPriceFormatter.string(from: NSNumber(value: bid))!
+
+                    let priceString = NSMutableAttributedString(string: priceStr)
+                    if instrument.pipPrecision != nil {
+                        priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.5), range: NSRange(location: 0, length: priceString.length))
+                        priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: max(0, priceString.length - length - toLast), length: min(priceString.length, length + toLast)))
+                    } else {
+                        priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: priceString.length))
+                    }
+                    bidButton.setAttributedTitle(priceString, for: UIControlState())
+                }
+
+                if let spread = pricesForInstrumentIds[instrumentId]?.spread {
+                    cell.spreadLabel.text = numberFormatter.string(from: NSNumber(value: spread))
                 }
             }
         }
     }
-    
-    @IBAction func addSymbolTap(sender: UIBarButtonItem) {
-        tradable.presentInstrumentSelector(currentAccount!, delegate: self, presentingViewController: self, presentationStyle: UIModalPresentationStyle.OverFullScreen)
+
+    @IBAction func addSymbolTap(_ sender: UIBarButtonItem) {
+        self.tradablePresentInstrumentSelector(for: currentAccount!, delegate: self, presentationStyle: UIModalPresentationStyle.overFullScreen)
     }
 }

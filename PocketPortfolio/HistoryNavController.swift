@@ -1,6 +1,6 @@
 //
 //  HistoryNavController.swift
-//  TradableExampleApp
+//  PocketPortfolio
 //
 //  Created by Tradable ApS on 16/10/15.
 //  Copyright © 2015 Tradable ApS. All rights reserved.
@@ -19,13 +19,12 @@ class HistoryNavController: UINavigationController, TradableEventsDelegate, Trad
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
-    func tradableUpdateError(error: TradableError) {
+
+    func tradableUpdateError(_ error: TradableError) {
         print(error)
     }
-    
+
     func tradableOrderEntryDismissed(order: TradableOrder?) {
-        tradable.delegate = self
         (tabBarController as! TabBarController).deselectMiddleButton()
     }
 }

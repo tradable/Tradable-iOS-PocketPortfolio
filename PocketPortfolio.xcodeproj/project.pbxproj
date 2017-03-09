@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		41BC39F6110C28F7B7D9240C /* Pods_PocketPortfolio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CED1B7FA03660F556F063ED1 /* Pods_PocketPortfolio.framework */; };
 		4B0D82521C08A0C00028C822 /* ClosedPositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0D82511C08A0C00028C822 /* ClosedPositionView.swift */; };
 		4B0D82541C08A0D60028C822 /* ClosedPositionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B0D82531C08A0D60028C822 /* ClosedPositionView.xib */; };
-		4B52DFA81CB7F34A009A88BF /* TradableAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B52DFA71CB7F34A009A88BF /* TradableAPI.framework */; };
-		4B52DFA91CB7F34A009A88BF /* TradableAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4B52DFA71CB7F34A009A88BF /* TradableAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4B9A32581E6D93F3009034A6 /* TradableAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9A32571E6D93F3009034A6 /* TradableAPI.framework */; };
+		4B9A32591E6D93F3009034A6 /* TradableAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9A32571E6D93F3009034A6 /* TradableAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4BDBA0231BC65531006719C0 /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDBA0221BC65531006719C0 /* AccountCell.swift */; };
 		4BDBA02E1BC68838006719C0 /* PositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDBA02D1BC68838006719C0 /* PositionView.swift */; };
 		4BDBA0301BC695A7006719C0 /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDBA02F1BC695A7006719C0 /* PortfolioView.swift */; };
@@ -46,7 +47,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4B52DFA91CB7F34A009A88BF /* TradableAPI.framework in Embed Frameworks */,
+				4B9A32591E6D93F3009034A6 /* TradableAPI.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -56,7 +57,7 @@
 /* Begin PBXFileReference section */
 		4B0D82511C08A0C00028C822 /* ClosedPositionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosedPositionView.swift; sourceTree = "<group>"; };
 		4B0D82531C08A0D60028C822 /* ClosedPositionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClosedPositionView.xib; sourceTree = "<group>"; };
-		4B52DFA71CB7F34A009A88BF /* TradableAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TradableAPI.framework; path = Frameworks/TradableAPI.framework; sourceTree = "<group>"; };
+		4B9A32571E6D93F3009034A6 /* TradableAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TradableAPI.framework; path = Frameworks/TradableAPI.framework; sourceTree = "<group>"; };
 		4BDBA0221BC65531006719C0 /* AccountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
 		4BDBA02D1BC68838006719C0 /* PositionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionView.swift; sourceTree = "<group>"; };
 		4BDBA02F1BC695A7006719C0 /* PortfolioView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioView.swift; sourceTree = "<group>"; };
@@ -85,6 +86,9 @@
 		4BE131B81BCD10A200417DCD /* PortfolioNavController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioNavController.swift; sourceTree = "<group>"; };
 		4BE131BA1BCD513200417DCD /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Regular.ttf"; path = "PocketPortfolio/Assets.xcassets/Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		4BEACF641BCFB41F00C67A1B /* PortfolioViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioViewDelegate.swift; sourceTree = "<group>"; };
+		B0CB709B3B4E4B384FB08571 /* Pods-PocketPortfolio.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PocketPortfolio.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PocketPortfolio/Pods-PocketPortfolio.debug.xcconfig"; sourceTree = "<group>"; };
+		C6505404D69DA410749054DB /* Pods-PocketPortfolio.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PocketPortfolio.release.xcconfig"; path = "Pods/Target Support Files/Pods-PocketPortfolio/Pods-PocketPortfolio.release.xcconfig"; sourceTree = "<group>"; };
+		CED1B7FA03660F556F063ED1 /* Pods_PocketPortfolio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PocketPortfolio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,7 +96,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B52DFA81CB7F34A009A88BF /* TradableAPI.framework in Frameworks */,
+				4B9A32581E6D93F3009034A6 /* TradableAPI.framework in Frameworks */,
+				41BC39F6110C28F7B7D9240C /* Pods_PocketPortfolio.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,6 +110,7 @@
 				4BDF846F1C2AA58D00802CFD /* Frameworks */,
 				4BE131BC1BCD513E00417DCD /* Resources */,
 				4BDC40AC1BC2C2D400B928FA /* PocketPortfolio */,
+				CD290B20CEA63BC09AA3D3A2 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -147,7 +153,8 @@
 		4BDF846F1C2AA58D00802CFD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4B52DFA71CB7F34A009A88BF /* TradableAPI.framework */,
+				4B9A32571E6D93F3009034A6 /* TradableAPI.framework */,
+				CED1B7FA03660F556F063ED1 /* Pods_PocketPortfolio.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -169,6 +176,15 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		CD290B20CEA63BC09AA3D3A2 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B0CB709B3B4E4B384FB08571 /* Pods-PocketPortfolio.debug.xcconfig */,
+				C6505404D69DA410749054DB /* Pods-PocketPortfolio.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -176,11 +192,16 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4BDC40BE1BC2C2D400B928FA /* Build configuration list for PBXNativeTarget "PocketPortfolio" */;
 			buildPhases = (
+				4B9A97D31E6EF8F5000F9488 /* SwiftLint */,
+				267DD79A8F7707B645E9A44D /* [CP] Check Pods Manifest.lock */,
 				4BDC40A61BC2C2D400B928FA /* Sources */,
 				4BDC40A71BC2C2D400B928FA /* Frameworks */,
 				4BDC40A81BC2C2D400B928FA /* Resources */,
 				4BDFDE8B1BFCB5D4003A82DD /* Embed Frameworks */,
-				4BDFE0031C2844E9005EA358 /* Run Script Stripping Simulator Slices */,
+				6D0B5024F5F0C127BCD7F519 /* [CP] Embed Pods Frameworks */,
+				88D8B743648C02B197B3F8A7 /* [CP] Copy Pods Resources */,
+				4BDFE0031C2844E9005EA358 /* Strip Simulator Slices Script */,
+				4B9A325A1E6D98F9009034A6 /* Increment Build Number Script */,
 			);
 			buildRules = (
 			);
@@ -197,11 +218,14 @@
 		4BDC40A21BC2C2D400B928FA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Tradable ApS";
 				TargetAttributes = {
 					4BDC40A91BC2C2D400B928FA = {
 						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = 83RR8433N3;
+						LastSwiftMigration = 0820;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -241,19 +265,92 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4BDFE0031C2844E9005EA358 /* Run Script Stripping Simulator Slices */ = {
+		267DD79A8F7707B645E9A44D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Run Script Stripping Simulator Slices";
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		4B9A325A1E6D98F9009034A6 /* Increment Build Number Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Increment Build Number Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#https://jellystyle.com/2015/07/versioning-with-xcode\nplist=${INFOPLIST_FILE}\n\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"";
+		};
+		4B9A97D31E6EF8F5000F9488 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"";
+		};
+		4BDFE0031C2844E9005EA358 /* Strip Simulator Slices Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Strip Simulator Slices Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# taken from http://ikennd.ac/blog/2015/02/stripping-unwanted-architectures-from-dynamic-libraries-in-xcode/\n\nAPP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\n# This script loops through the frameworks embedded in the application and\n# removes unused architectures.\nfind \"$APP_PATH\" -name '*.framework' -type d | while read -r FRAMEWORK\ndo\n    FRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\n    FRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\n    echo \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\n\n    EXTRACTED_ARCHS=()\n\n    for ARCH in $ARCHS\n    do\n        echo \"Extracting $ARCH from $FRAMEWORK_EXECUTABLE_NAME\"\n        lipo -extract \"$ARCH\" \"$FRAMEWORK_EXECUTABLE_PATH\" -o \"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\"\n        EXTRACTED_ARCHS+=(\"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\")\n    done\n\n    echo \"Merging extracted architectures: ${ARCHS}\"\n    lipo -o \"$FRAMEWORK_EXECUTABLE_PATH-merged\" -create \"${EXTRACTED_ARCHS[@]}\"\n    rm \"${EXTRACTED_ARCHS[@]}\"\n\n    echo \"Replacing original executable with thinned version\"\n    rm \"$FRAMEWORK_EXECUTABLE_PATH\"\n    mv \"$FRAMEWORK_EXECUTABLE_PATH-merged\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n\ndone";
+		};
+		6D0B5024F5F0C127BCD7F519 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PocketPortfolio/Pods-PocketPortfolio-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		88D8B743648C02B197B3F8A7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PocketPortfolio/Pods-PocketPortfolio-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -321,8 +418,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -345,7 +444,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "77c59eac-1e35-48a7-81df-48d3c6d6bc9c";
@@ -368,8 +467,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -387,10 +488,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PROVISIONING_PROFILE = "77c59eac-1e35-48a7-81df-48d3c6d6bc9c";
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -398,47 +500,55 @@
 		};
 		4BDC40BF1BC2C2D400B928FA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B0CB709B3B4E4B384FB08571 /* Pods-PocketPortfolio.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
+				DEVELOPMENT_TEAM = 83RR8433N3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)",
+					"$(inherited)",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/PocketPortfolio/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tradable.ios.PocketPortfolio;
 				PRODUCT_NAME = PocketPortfolio;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		4BDC40C01BC2C2D400B928FA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C6505404D69DA410749054DB /* Pods-PocketPortfolio.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
+				DEVELOPMENT_TEAM = 83RR8433N3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)",
+					"$(inherited)",
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/PocketPortfolio/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tradable.ios.PocketPortfolio;
 				PRODUCT_NAME = PocketPortfolio;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
