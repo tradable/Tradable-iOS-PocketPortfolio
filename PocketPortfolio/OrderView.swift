@@ -18,6 +18,7 @@ class OrderView: UIView {
     @IBOutlet weak var amountLabel: UILabel!
     @IBOutlet weak var orderSideLabel: UILabel!
     @IBOutlet weak var atLabel: UILabel!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     let amountFormatter = NumberFormatter()
     let priceFormatter = NumberFormatter()
@@ -38,7 +39,7 @@ class OrderView: UIView {
 
         priceFormatter.numberStyle = NumberFormatter.Style.decimal
 
-        line.image = drawLine()
+        line.image = drawLine(color: lineColor)
 
         self.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width, height: 81.0)
     }
@@ -51,14 +52,18 @@ class OrderView: UIView {
                 didRequestInstrument = true
                 order.getInstrument({ (instrument, _) in
                     self.instrument = instrument
-                    self.symbolLabel.text = instrument?.brokerageAccountSymbol
-                    self.atLabel.isHidden = false
                 })
             }
 
             return
         }
+
+        activityIndicator.stopAnimating()
+
+        line.isHidden = false
+
         symbolLabel.text = instrument.brokerageAccountSymbol
+        atLabel.isHidden = false
 
         if order.type == .limit {
             orderTypeLabel.text = "Limit Order"
@@ -94,10 +99,10 @@ class OrderView: UIView {
 
             let priceString = NSMutableAttributedString(string: priceStr)
             if precision != nil {
-                priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 153.0/255.0, green: 153.0/255.0, blue: 153.0/255.0, alpha: 1.0), range: NSRange(location: 0, length: priceString.length))
-                priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: max(0, priceString.length - length - toLast), length: min(priceString.length, length + toLast)))
+                priceString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor(red: 153.0/255.0, green: 153.0/255.0, blue: 153.0/255.0, alpha: 1.0), range: NSRange(location: 0, length: priceString.length))
+                priceString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: NSRange(location: max(0, priceString.length - length - toLast), length: min(priceString.length, length + toLast)))
             } else {
-                priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: priceString.length))
+                priceString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: priceString.length))
             }
             priceLabel.attributedText = priceString
         }

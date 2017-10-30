@@ -85,19 +85,14 @@ class PortfolioNavController: UINavigationController, TradableEventsDelegate, Tr
         portfolioVC.portfolioView?.setNeedsLayout()
     }
 
-    func accountChanged() {
-        if let currentAccount = currentAccount {
-            let portfolioVC = self.viewControllers[0] as! PortfolioViewController
-            portfolioVC.waiting = true
-            portfolioVC.clearPortfolio()
-            self.navigationBar.topItem?.title = "My \(currentAccount.displayName) Account"
-        }
+    @objc func accountChanged() {
+        let portfolioVC = self.viewControllers[0] as! PortfolioViewController
+        portfolioVC.waiting = true
+        portfolioVC.clearPortfolio()
+        self.navigationBar.topItem?.title = "My " + (currentAccount?.displayName ?? "") + " Account"
     }
 
     func tradableOrderEntryDismissed(order: TradableOrder?) {
         (tabBarController as! TabBarController).deselectMiddleButton()
-        if order != nil {
-            tabBarController?.selectedViewController = tabBarController?.viewControllers?[1]
-        }
     }
 }

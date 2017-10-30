@@ -12,19 +12,18 @@ import TradableAPI
 
 let EPSILON: Double = 0.00000001
 
-let greenCGColor = UIColor(red: 38.0/255.0, green: 209.0/255.0, blue: 193.0/255.0, alpha: 1.0).cgColor
-let pinkCGColor = UIColor(red: 255.0/255.0, green: 150.0/255.0, blue: 191.0/255.0, alpha: 1.0).cgColor
-
 let greenColor = UIColor(red: 38.0/255.0, green: 209.0/255.0, blue: 193.0/255.0, alpha: 1.0)
+let darkGreenColor = UIColor(red: 0.0/255.0, green: 140.0/255.0, blue: 149.0/255.0, alpha: 1.0)
 let pinkColor = UIColor(red: 255.0/255.0, green: 150.0/255.0, blue: 191.0/255.0, alpha: 1.0)
 let darkPinkColor = UIColor(red: 255.0/255.0, green: 0.0/255.0, blue: 100.0/255.0, alpha: 1.0)
+let lineColor = UIColor(red: 16.0/255.0, green: 137.0/255.0, blue: 147.0/255.0, alpha: 0.1)
+let whiteLineColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
 
-let customURI = "com.tradable.example1://oauth2callback"
+let customUri = "com.tradable.ios.pocketportfolio://oauth2callback"
 
-let appID: UInt64 = 100007
-let appKey: String = ""
+let appId: UInt64 = 100100
 
-let accountDidChangeNotificationKey = "com.tradable.pocketportfolio.accountDidChange"
+let accountDidChangeNotificationKey = "com.tradable.ios.pocketportfolio.accountDidChange"
 
 var tradable = Tradable.sharedInstance
 
@@ -61,15 +60,23 @@ func removeAccount(_ account: TradableAccount) {
     print("Account \(account.id) removed.")
     if accountList.count == 0 {
         currentAccount = nil
-        tradable.createDemoAccount(with: TradableDemoAPIAuthenticationRequest(appKey: appKey, appId: appID, type: .forex), completion: { (accessToken, _) in
-            if let accessToken = accessToken {
-                tradable.activate(with: accessToken)
-            }
-        })
+        showLoggedOutAlert()
     } else {
         accountIndex = accountList.count - 1
         currentAccount = accountList[accountIndex]
     }
+}
+
+private func showLoggedOutAlert() {
+    let alert = UIAlertController(title: nil, message: "There are no active accounts. Please sign in again.", preferredStyle: .alert)
+
+    let loginAction = UIAlertAction(title: "Sign in", style: .default) { _ in
+       tradable.authenticate(withAppId: appId, uri: customUri, viewController: UIApplication.topViewController())
+    }
+
+    alert.addAction(loginAction)
+
+    UIApplication.topViewController()?.present(alert, animated: true, completion: nil)
 }
 
 var currentAccount: TradableAccount? {
@@ -80,10 +87,9 @@ var currentAccount: TradableAccount? {
         updatesRequest = TradableUpdatesRequest(instrumentIds: instrumentIdsForUpdates)
     }
     didSet {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: accountDidChangeNotificationKey), object: nil)
         if let ca = currentAccount {
             ca.startUpdates(ofType: .full, withFrequency: .oneSecond, with: updatesRequest)
-
-            NotificationCenter.default.post(name: Notification.Name(rawValue: accountDidChangeNotificationKey), object: nil)
         }
     }
 }
@@ -132,14 +138,31 @@ extension UIView {
     }
 }
 
+extension UIApplication {
+    class func topViewController(controller: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+        if let navigationController = controller as? UINavigationController {
+            return topViewController(controller: navigationController.visibleViewController)
+        }
+        if let tabController = controller as? UITabBarController {
+            if let selected = tabController.selectedViewController {
+                return topViewController(controller: selected)
+            }
+        }
+        if let presented = controller?.presentedViewController {
+            return topViewController(controller: presented)
+        }
+        return controller
+    }
+}
+
 //global helper UI methods
 
-func drawLine() -> UIImage {
+func drawLine(color: UIColor) -> UIImage {
     let bounds = CGRect(x: 0, y: 0, width: 1, height: 1)
     UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0)
 
     let context = UIGraphicsGetCurrentContext()
-    context?.setStrokeColor(UIColor(red: 16.0/255.0, green: 137.0/255.0, blue: 147.0/255.0, alpha: 0.1).cgColor)
+    context?.setStrokeColor(color.cgColor)
     context?.setLineWidth(1.0)
 
     context?.beginPath()

@@ -11,7 +11,7 @@ import SafariServices
 
 import TradableAPI
 
-class ViewController: UIViewController, TradableAuthDelegate, SFSafariViewControllerDelegate {
+class ViewController: UIViewController, SFSafariViewControllerDelegate {
 
     @IBOutlet weak var logo: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -35,7 +35,7 @@ class ViewController: UIViewController, TradableAuthDelegate, SFSafariViewContro
             self.topLogoConstraint.constant = UIScreen.main.bounds.height/3.0
             self.leadingLogoConstraint.constant = (UIScreen.main.bounds.width - 256.0)/2.0
             self.view.layoutIfNeeded()
-            }) { (_) -> Void in
+        }, completion: { (_) -> Void in
                 self.titleLabel.transform = self.titleLabel.transform.scaledBy(x: 0.25, y: 0.25)
                 UIView.animate(withDuration: 0.3, animations: { () -> Void in
                     self.titleLabel.transform = self.titleLabel.transform.scaledBy(x: 4.0, y: 4.0)
@@ -49,8 +49,7 @@ class ViewController: UIViewController, TradableAuthDelegate, SFSafariViewContro
                             self.signInButton.backgroundColor = color
                             }, completion: nil)
                 })
-        }
-
+        })
     }
 
     override func didReceiveMemoryWarning() {
@@ -58,6 +57,6 @@ class ViewController: UIViewController, TradableAuthDelegate, SFSafariViewContro
     }
 
     @IBAction func signIn(_ sender: UIButton) {
-        tradable.authenticateWith(appId: appID, uri: customURI, viewController: self)
+        tradable.authenticate(withAppId: appId, uri: customUri, viewController: self)
     }
 }

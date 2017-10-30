@@ -119,7 +119,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-    func accountChanged() {
+    @objc func accountChanged() {
         clearData()
 
         if accountList.count > 1 {
@@ -178,7 +178,11 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
         case 4:
             if let marginAmountUsed = metrics?.marginAmountUsed, let equity = metrics?.equity {
-                cell.valueLabel.text = numberFormatterPercent.string(from: NSNumber(value: marginAmountUsed/equity))
+                if equity != 0 {
+                    cell.valueLabel.text = numberFormatterPercent.string(from: NSNumber(value: marginAmountUsed/equity))
+                } else {
+                    cell.valueLabel.text = "..."
+                }
             } else {
                 cell.valueLabel.text = "..."
             }
@@ -188,6 +192,11 @@ class AccountViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     @IBAction func addAccountTap(_ sender: UIButton) {
-        tradable.authenticateWith(appId: appID, uri: customURI, viewController: self)
+        tradable.authenticate(withAppId: appId, uri: customUri, viewController: self, showLogin: true)
+    }
+
+    @IBAction func disconnectAccountTap(_ sender: UIButton) {
+        currentAccount!.getAccessToken()?.dispose()
+        removeAccount(currentAccount!)
     }
 }

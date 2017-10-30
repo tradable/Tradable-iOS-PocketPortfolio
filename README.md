@@ -2,8 +2,8 @@ PocketPortfolio is a demo app written in Swift. It aims to show how easy the Tra
 
 ## Requirements
 - iOS 9.0+
-- Xcode 8.0+
-- Swift 3.0+
+- Xcode 9.0+
+- Swift 3.2+
 - CocoaPods
 
 ## Getting started

@@ -20,11 +20,28 @@ class HistoryNavController: UINavigationController, TradableEventsDelegate, Trad
         super.didReceiveMemoryWarning()
     }
 
-    func tradableUpdateError(_ error: TradableError) {
-        print(error)
-    }
-
     func tradableOrderEntryDismissed(order: TradableOrder?) {
         (tabBarController as! TabBarController).deselectMiddleButton()
+    }
+
+    func tradableCandlesUpdated(candles: TradableCandleResponse) {
+        let historyVC = viewControllers[0] as! HistoryViewController
+        historyVC.candlesUpdated(candles: candles)
+    }
+
+    func tradableOrdersUpdated(orders: TradableOrders) {
+        let historyVC = viewControllers[0] as! HistoryViewController
+        historyVC.ordersUpdated(orders: orders)
+    }
+
+    func tradablePositionsUpdated(positions: TradablePositions) {
+        let historyVC = viewControllers[0] as! HistoryViewController
+        historyVC.positionsUpdated(positions: positions)
+    }
+
+    func tradableEventsError(error: TradableError) {
+        print(error)
+        let historyVC = viewControllers[0] as! HistoryViewController
+        historyVC.eventsError(error: error)
     }
 }

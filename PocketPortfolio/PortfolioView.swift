@@ -83,19 +83,19 @@ class PortfolioView: UIScrollView {
     func addClosedPosition(_ position: TradablePosition) {
         if closedPositions[position.id] == nil {
             let cpv = ClosedPositionView.loadFromNibNamed("ClosedPositionView") as! ClosedPositionView
-            cpv.setPositionDetails(position)
             closedPositions[position.id] = cpv
             addSubview(cpv)
         }
+        closedPositions[position.id]?.updateClosedPosition(position)
     }
 
-    func showPositionDetail(_ sender: UITapGestureRecognizer) {
+    @objc func showPositionDetail(_ sender: UITapGestureRecognizer) {
         if sender.state == .ended {
             portfolioDelegate?.showPositionDetails((sender.view as! PositionView).position!)
         }
     }
 
-    func showEditOrder(_ sender: UITapGestureRecognizer) {
+    @objc func showEditOrder(_ sender: UITapGestureRecognizer) {
         if sender.state == .ended {
             portfolioDelegate?.showEditOrder((sender.view as! OrderView).order!)
         }

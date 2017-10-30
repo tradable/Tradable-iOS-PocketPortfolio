@@ -10,8 +10,11 @@
 		41BC39F6110C28F7B7D9240C /* Pods_PocketPortfolio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CED1B7FA03660F556F063ED1 /* Pods_PocketPortfolio.framework */; };
 		4B0D82521C08A0C00028C822 /* ClosedPositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B0D82511C08A0C00028C822 /* ClosedPositionView.swift */; };
 		4B0D82541C08A0D60028C822 /* ClosedPositionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B0D82531C08A0D60028C822 /* ClosedPositionView.xib */; };
-		4B9A32581E6D93F3009034A6 /* TradableAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9A32571E6D93F3009034A6 /* TradableAPI.framework */; };
-		4B9A32591E6D93F3009034A6 /* TradableAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9A32571E6D93F3009034A6 /* TradableAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4B1E0F881F584D0700C79366 /* ChartMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1E0F871F584D0700C79366 /* ChartMarker.swift */; };
+		4B3F69101F97878C0018D0DF /* TradableAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B3F690F1F9787830018D0DF /* TradableAPI.framework */; };
+		4B3F69111F97878C0018D0DF /* TradableAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4B3F690F1F9787830018D0DF /* TradableAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4B785E1E1F5D57E600BB92D2 /* ChartMarker.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B785E1D1F5D57E600BB92D2 /* ChartMarker.xib */; };
+		4BB803391E72E9B900F87F1F /* AggregationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB803381E72E9B900F87F1F /* AggregationViewController.swift */; };
 		4BDBA0231BC65531006719C0 /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDBA0221BC65531006719C0 /* AccountCell.swift */; };
 		4BDBA02E1BC68838006719C0 /* PositionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDBA02D1BC68838006719C0 /* PositionView.swift */; };
 		4BDBA0301BC695A7006719C0 /* PortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDBA02F1BC695A7006719C0 /* PortfolioView.swift */; };
@@ -47,7 +50,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4B9A32591E6D93F3009034A6 /* TradableAPI.framework in Embed Frameworks */,
+				4B3F69111F97878C0018D0DF /* TradableAPI.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -57,7 +60,10 @@
 /* Begin PBXFileReference section */
 		4B0D82511C08A0C00028C822 /* ClosedPositionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosedPositionView.swift; sourceTree = "<group>"; };
 		4B0D82531C08A0D60028C822 /* ClosedPositionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClosedPositionView.xib; sourceTree = "<group>"; };
-		4B9A32571E6D93F3009034A6 /* TradableAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TradableAPI.framework; path = Frameworks/TradableAPI.framework; sourceTree = "<group>"; };
+		4B1E0F871F584D0700C79366 /* ChartMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartMarker.swift; sourceTree = "<group>"; };
+		4B3F690F1F9787830018D0DF /* TradableAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TradableAPI.framework; path = Frameworks/TradableAPI.framework; sourceTree = "<group>"; };
+		4B785E1D1F5D57E600BB92D2 /* ChartMarker.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChartMarker.xib; sourceTree = "<group>"; };
+		4BB803381E72E9B900F87F1F /* AggregationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AggregationViewController.swift; sourceTree = "<group>"; };
 		4BDBA0221BC65531006719C0 /* AccountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
 		4BDBA02D1BC68838006719C0 /* PositionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionView.swift; sourceTree = "<group>"; };
 		4BDBA02F1BC695A7006719C0 /* PortfolioView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioView.swift; sourceTree = "<group>"; };
@@ -96,7 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B9A32581E6D93F3009034A6 /* TradableAPI.framework in Frameworks */,
+				4B3F69101F97878C0018D0DF /* TradableAPI.framework in Frameworks */,
 				41BC39F6110C28F7B7D9240C /* Pods_PocketPortfolio.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -122,7 +128,9 @@
 				4BDD4D341BCE3E6000119C03 /* AccountNavController.swift */,
 				4BDE6FE21BC54924001BB342 /* AccountSelector.swift */,
 				4BE0608B1BC3CC2900D06D40 /* AccountViewController.swift */,
+				4BB803381E72E9B900F87F1F /* AggregationViewController.swift */,
 				4BDC40AD1BC2C2D400B928FA /* AppDelegate.swift */,
+				4B1E0F871F584D0700C79366 /* ChartMarker.swift */,
 				4B0D82511C08A0C00028C822 /* ClosedPositionView.swift */,
 				4BE0608F1BC3D71D00D06D40 /* Extensions.swift */,
 				4BE0DF1A1BD122D200E85E79 /* HistoryNavController.swift */,
@@ -140,6 +148,7 @@
 				4BE08DAF1BC7C70500CCF61B /* WatchlistNavController.swift */,
 				4BDC40AF1BC2C2D400B928FA /* WatchlistViewController.swift */,
 				4BDC40B61BC2C2D400B928FA /* Assets.xcassets */,
+				4B785E1D1F5D57E600BB92D2 /* ChartMarker.xib */,
 				4B0D82531C08A0D60028C822 /* ClosedPositionView.xib */,
 				4BDD4D3E1BCE9B1100119C03 /* OrderView.xib */,
 				4BDD4D381BCE587D00119C03 /* PositionView.xib */,
@@ -153,7 +162,7 @@
 		4BDF846F1C2AA58D00802CFD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4B9A32571E6D93F3009034A6 /* TradableAPI.framework */,
+				4B3F690F1F9787830018D0DF /* TradableAPI.framework */,
 				CED1B7FA03660F556F063ED1 /* Pods_PocketPortfolio.framework */,
 			);
 			name = Frameworks;
@@ -192,8 +201,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4BDC40BE1BC2C2D400B928FA /* Build configuration list for PBXNativeTarget "PocketPortfolio" */;
 			buildPhases = (
-				4B9A97D31E6EF8F5000F9488 /* SwiftLint */,
 				267DD79A8F7707B645E9A44D /* [CP] Check Pods Manifest.lock */,
+				4B9A97D31E6EF8F5000F9488 /* SwiftLint */,
 				4BDC40A61BC2C2D400B928FA /* Sources */,
 				4BDC40A71BC2C2D400B928FA /* Frameworks */,
 				4BDC40A81BC2C2D400B928FA /* Resources */,
@@ -218,7 +227,7 @@
 		4BDC40A21BC2C2D400B928FA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Tradable ApS";
 				TargetAttributes = {
 					4BDC40A91BC2C2D400B928FA = {
@@ -256,6 +265,7 @@
 				4BDD4D3F1BCE9B1100119C03 /* OrderView.xib in Resources */,
 				4BDD4D391BCE587D00119C03 /* PositionView.xib in Resources */,
 				4BDC40B71BC2C2D400B928FA /* Assets.xcassets in Resources */,
+				4B785E1E1F5D57E600BB92D2 /* ChartMarker.xib in Resources */,
 				4BE131BB1BCD513200417DCD /* Roboto-Regular.ttf in Resources */,
 				4B0D82541C08A0D60028C822 /* ClosedPositionView.xib in Resources */,
 				4BDC40B51BC2C2D400B928FA /* Main.storyboard in Resources */,
@@ -271,13 +281,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PocketPortfolio-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		4B9A325A1E6D98F9009034A6 /* Increment Build Number Script */ = {
@@ -320,7 +333,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# taken from http://ikennd.ac/blog/2015/02/stripping-unwanted-architectures-from-dynamic-libraries-in-xcode/\n\nAPP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\n# This script loops through the frameworks embedded in the application and\n# removes unused architectures.\nfind \"$APP_PATH\" -name '*.framework' -type d | while read -r FRAMEWORK\ndo\n    FRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\n    FRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\n    echo \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\n\n    EXTRACTED_ARCHS=()\n\n    for ARCH in $ARCHS\n    do\n        echo \"Extracting $ARCH from $FRAMEWORK_EXECUTABLE_NAME\"\n        lipo -extract \"$ARCH\" \"$FRAMEWORK_EXECUTABLE_PATH\" -o \"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\"\n        EXTRACTED_ARCHS+=(\"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\")\n    done\n\n    echo \"Merging extracted architectures: ${ARCHS}\"\n    lipo -o \"$FRAMEWORK_EXECUTABLE_PATH-merged\" -create \"${EXTRACTED_ARCHS[@]}\"\n    rm \"${EXTRACTED_ARCHS[@]}\"\n\n    echo \"Replacing original executable with thinned version\"\n    rm \"$FRAMEWORK_EXECUTABLE_PATH\"\n    mv \"$FRAMEWORK_EXECUTABLE_PATH-merged\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n\ndone";
+			shellScript = "# taken from http://ikennd.ac/blog/2015/02/stripping-unwanted-architectures-from-dynamic-libraries-in-xcode/\n\nAPP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\n# This script loops through the frameworks embedded in the application and\n# removes unused architectures.\nfind \"$APP_PATH\" -name 'TradableAPI.framework' -type d | while read -r FRAMEWORK\ndo\n    FRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\n    FRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\n    echo \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\n\n    EXTRACTED_ARCHS=()\n\n    for ARCH in $ARCHS\n    do\n        echo \"Extracting $ARCH from $FRAMEWORK_EXECUTABLE_NAME\"\n        lipo -extract \"$ARCH\" \"$FRAMEWORK_EXECUTABLE_PATH\" -o \"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\"\n        EXTRACTED_ARCHS+=(\"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\")\n    done\n\n    echo \"Merging extracted architectures: ${ARCHS}\"\n    lipo -o \"$FRAMEWORK_EXECUTABLE_PATH-merged\" -create \"${EXTRACTED_ARCHS[@]}\"\n    rm \"${EXTRACTED_ARCHS[@]}\"\n\n    echo \"Replacing original executable with thinned version\"\n    rm \"$FRAMEWORK_EXECUTABLE_PATH\"\n    mv \"$FRAMEWORK_EXECUTABLE_PATH-merged\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n\ndone";
 		};
 		6D0B5024F5F0C127BCD7F519 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -328,9 +341,18 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-PocketPortfolio/Pods-PocketPortfolio-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftKeychainWrapper/SwiftKeychainWrapper.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftKeychainWrapper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -361,6 +383,7 @@
 			files = (
 				4BE0608C1BC3CC2900D06D40 /* AccountViewController.swift in Sources */,
 				4BDBA0301BC695A7006719C0 /* PortfolioView.swift in Sources */,
+				4BB803391E72E9B900F87F1F /* AggregationViewController.swift in Sources */,
 				4BDC40B21BC2C2D400B928FA /* PortfolioViewController.swift in Sources */,
 				4B0D82521C08A0C00028C822 /* ClosedPositionView.swift in Sources */,
 				4BDBA0321BC69804006719C0 /* OrderView.swift in Sources */,
@@ -373,6 +396,7 @@
 				4BE0DF1B1BD122D200E85E79 /* HistoryNavController.swift in Sources */,
 				4BDD4D351BCE3E6000119C03 /* AccountNavController.swift in Sources */,
 				4BDE6F6D1BC5138F001BB342 /* ViewController.swift in Sources */,
+				4B1E0F881F584D0700C79366 /* ChartMarker.swift in Sources */,
 				4BE060921BC3FA7700D06D40 /* WatchlistCell.swift in Sources */,
 				4BE060881BC3C9E800D06D40 /* TradeViewController.swift in Sources */,
 				4BEACF651BCFB41F00C67A1B /* PortfolioViewDelegate.swift in Sources */,
@@ -413,14 +437,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -462,14 +492,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -520,7 +556,7 @@
 				PRODUCT_NAME = PocketPortfolio;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -548,7 +584,7 @@
 				PRODUCT_NAME = PocketPortfolio;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

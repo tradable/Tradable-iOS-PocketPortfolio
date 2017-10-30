@@ -38,8 +38,8 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
 
         self.delegate = self
 
-        let middleImage: UIImage = UIImage(named:"trade")!
-        let selectedStateMiddleImage: UIImage = UIImage(named:"tradeBack")!
+        let middleImage: UIImage = UIImage(named: "trade")!
+        let selectedStateMiddleImage: UIImage = UIImage(named: "tradeBack")!
 
         addCenterButtonWithImage(middleImage, selectedStateImage: selectedStateMiddleImage)
 
@@ -86,7 +86,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate {
         view.addSubview(tradeButton)
     }
 
-    func changeTabToMiddleTab(_ sender: UIButton) {
+    @objc func changeTabToMiddleTab(_ sender: UIButton) {
         DispatchQueue.main.async(execute: {
             if self.isSelected {
                 self.selectedViewController?.dismiss(animated: true, completion: { () -> Void in

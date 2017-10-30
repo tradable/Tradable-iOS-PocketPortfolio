@@ -11,7 +11,6 @@ import TradableAPI
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, TradableAuthDelegate {
-
     var window: UIWindow?
 
     var shouldTransition = true
@@ -61,5 +60,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, TradableAuthDelegate {
         if let acc = error.associatedAccount {
             removeAccount(acc)
         }
+    }
+
+    func tradableTwoFactorAuthenticationChallenge(challenge: TradableTwoFactorAuthenticationChallenge) {
+        UIApplication.topViewController()?.tradablePresentTwoFactorAuthenticationChallengeDialog(for: currentAccount!, with: challenge)
+
     }
 }

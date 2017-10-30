@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -25,18 +25,21 @@
                     <color key="textColor" red="0.25882352941176467" green="0.29411764705882354" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="v4Z-U2-wAG">
+                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="v4Z-U2-wAG">
                     <rect key="frame" x="0.0" y="40" width="375" height="1"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="Ng6-L7-18Q"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Closed" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="095-0D-4sg">
-                    <rect key="frame" x="18" y="50" width="50" height="22"/>
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Closed" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="095-0D-4sg">
+                    <rect key="frame" x="18" y="50" width="50" height="21.5"/>
                     <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
                     <color key="textColor" red="0.25882352939999997" green="0.29411764709999999" blue="0.33333333329999998" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="y0W-AJ-8SN">
+                    <rect key="frame" x="177" y="323" width="20" height="20"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -44,11 +47,15 @@
                 <constraint firstAttribute="trailing" secondItem="v4Z-U2-wAG" secondAttribute="trailing" id="Jfo-kj-JlI"/>
                 <constraint firstItem="v4Z-U2-wAG" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="OhO-cc-8n0"/>
                 <constraint firstItem="v4Z-U2-wAG" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="40" id="QHu-gr-fNa"/>
+                <constraint firstItem="y0W-AJ-8SN" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="hVk-e8-itn"/>
                 <constraint firstItem="095-0D-4sg" firstAttribute="top" secondItem="v4Z-U2-wAG" secondAttribute="bottom" constant="9" id="krC-rN-wUl"/>
+                <constraint firstItem="y0W-AJ-8SN" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="s0D-PZ-ihx"/>
                 <constraint firstItem="095-0D-4sg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="18" id="vyz-xd-T62"/>
                 <constraint firstItem="vPR-x1-7CB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="xcp-xE-HXN"/>
             </constraints>
             <connections>
+                <outlet property="activityIndicator" destination="y0W-AJ-8SN" id="cQn-zj-JkZ"/>
+                <outlet property="closedLabel" destination="095-0D-4sg" id="9u9-5s-LKa"/>
                 <outlet property="line" destination="v4Z-U2-wAG" id="zIt-bZ-D5g"/>
                 <outlet property="symbolLabel" destination="vPR-x1-7CB" id="i9R-wI-QkL"/>
             </connections>

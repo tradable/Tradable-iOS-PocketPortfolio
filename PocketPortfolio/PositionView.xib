@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -22,7 +22,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iN0-l3-epB" userLabel="Inner View">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wVQ-dd-sF1">
+                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wVQ-dd-sF1">
                             <rect key="frame" x="0.0" y="40" width="375" height="1"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="0GU-Nh-VaA"/>
@@ -114,6 +114,9 @@
                             <color key="textColor" red="0.52941176469999995" green="0.52941176469999995" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="xzF-Li-t8d">
+                            <rect key="frame" x="177" y="323" width="20" height="20"/>
+                        </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
@@ -147,6 +150,8 @@
                         <constraint firstItem="nw7-uh-PUZ" firstAttribute="leading" secondItem="FXX-dQ-JOG" secondAttribute="trailing" constant="15" id="eaY-zr-SMR"/>
                         <constraint firstItem="SPz-Vz-dfn" firstAttribute="top" secondItem="wVQ-dd-sF1" secondAttribute="bottom" constant="9" id="hVV-Mf-lY0"/>
                         <constraint firstItem="TD2-sx-4cd" firstAttribute="centerY" secondItem="bDu-rY-zrA" secondAttribute="centerY" id="hiF-pT-Xag"/>
+                        <constraint firstItem="xzF-Li-t8d" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="mI9-Up-ody"/>
+                        <constraint firstItem="xzF-Li-t8d" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="qf3-UZ-rNj"/>
                         <constraint firstItem="htS-Ew-qbP" firstAttribute="width" secondItem="wVQ-dd-sF1" secondAttribute="width" id="qu6-ab-Dfx"/>
                         <constraint firstAttribute="trailing" secondItem="nw7-uh-PUZ" secondAttribute="trailing" constant="18" id="tRN-NR-nLM"/>
                         <constraint firstItem="hF0-Ze-hVt" firstAttribute="centerY" secondItem="Inb-hq-NEw" secondAttribute="centerY" id="uCm-AL-IUr"/>
@@ -163,6 +168,7 @@
                 <constraint firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="UFp-KZ-KE3"/>
             </constraints>
             <connections>
+                <outlet property="activityIndicator" destination="xzF-Li-t8d" id="vb2-d1-b2U"/>
                 <outlet property="amountLabel" destination="1zC-f3-kkx" id="KJE-28-VUT"/>
                 <outlet property="atLabel" destination="gDy-vs-3kd" id="TRP-FH-jyz"/>
                 <outlet property="directionLabel" destination="SPz-Vz-dfn" id="Wqs-cy-9ZK"/>

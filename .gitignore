@@ -1,2 +1,6 @@
-# Pods
-Pods/
+.DS_Store
+Pods
+Podfile.lock
+PocketPortfolio/.DS_Store
+Frameworks/.DS_Store
+xcuserdata/

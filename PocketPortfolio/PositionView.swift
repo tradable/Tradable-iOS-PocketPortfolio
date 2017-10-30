@@ -49,6 +49,8 @@ class PositionView: UIView {
 
     @IBOutlet weak var innerView: UIView!
 
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+
     let gradient = CAGradientLayer()
 
     let amountFormatter = NumberFormatter()
@@ -83,8 +85,8 @@ class PositionView: UIView {
 
         layer.insertSublayer(gradient, at: 0)
 
-        firstLine.image = drawLine()
-        secondLine.image = drawLine()
+        firstLine.image = drawLine(color: lineColor)
+        secondLine.image = drawLine(color: lineColor)
 
         self.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width, height: 81.0)
     }
@@ -105,14 +107,20 @@ class PositionView: UIView {
                 didRequestInstrument = true
                 position.getInstrument({ (instrument, _) in
                     self.instrument = instrument
-                    self.symbolLabel.text = instrument?.brokerageAccountSymbol
-                    self.atLabel.isHidden = false
+                    //self.symbolLabel.text = instrument?.brokerageAccountSymbol
+                    //self.atLabel.isHidden = false
                 })
             }
 
             return
         }
+
+        activityIndicator.stopAnimating()
+
+        firstLine.isHidden = false
+
         symbolLabel.text = instrument.brokerageAccountSymbol
+        atLabel.isHidden = false
 
         var hasProtections = false
 
@@ -171,10 +179,10 @@ class PositionView: UIView {
 
         let priceString = NSMutableAttributedString(string: priceStr)
         if precision != nil {
-            priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 153.0/255.0, green: 153.0/255.0, blue: 153.0/255.0, alpha: 1.0), range: NSRange(location: 0, length: priceString.length))
-            priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: max(0, priceString.length - length - toLast), length: min(priceString.length, length + toLast)))
+            priceString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor(red: 153.0/255.0, green: 153.0/255.0, blue: 153.0/255.0, alpha: 1.0), range: NSRange(location: 0, length: priceString.length))
+            priceString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: NSRange(location: max(0, priceString.length - length - toLast), length: min(priceString.length, length + toLast)))
         } else {
-            priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: priceString.length))
+            priceString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: priceString.length))
         }
         priceLabel.attributedText = priceString
 

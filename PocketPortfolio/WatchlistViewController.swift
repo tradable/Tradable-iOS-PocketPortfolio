@@ -14,7 +14,8 @@ import SwiftyJSON
 
 class WatchlistViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TradableInstrumentSelectorDelegate {
 
-    @IBOutlet weak var addInstrumentsLabel: UILabel!
+    @IBOutlet weak var emptyWatchlistLabel: UILabel!
+    @IBOutlet weak var addInstrumentsButton: UIButton!
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -131,7 +132,7 @@ class WatchlistViewController: UIViewController, UITableViewDelegate, UITableVie
         return loadedInstrumentIds
     }
 
-    func accountChanged() {
+    @objc func accountChanged() {
         //figure out how to prevent from crashing when acc changes too fast
         canUpdate = false
         canSave = false
@@ -139,13 +140,14 @@ class WatchlistViewController: UIViewController, UITableViewDelegate, UITableVie
         instrumentIds = []
         pricesForInstrumentIds = [:]
 
-        let loadedInstrumentIds = loadWatchlist()
-        print(loadedInstrumentIds)
+        let loadedInstrumentIds = currentAccount == nil ? [] : loadWatchlist()
 
         if loadedInstrumentIds.isEmpty {
-            addInstrumentsLabel.isHidden = false
+            emptyWatchlistLabel.isHidden = false
+            addInstrumentsButton.isHidden = false
         } else {
-            addInstrumentsLabel.isHidden = true
+            emptyWatchlistLabel.isHidden = true
+            addInstrumentsButton.isHidden = true
             instrumentIds = loadedInstrumentIds
             instrumentIdsForUpdates = instrumentIds
             currentAccount!.getInstruments(with: TradableInstrumentSearchRequest(instrumentIds: loadedInstrumentIds), completionHandler: { (instrumentList, _) in
@@ -153,7 +155,7 @@ class WatchlistViewController: UIViewController, UITableViewDelegate, UITableVie
                 var index = 0
                 for instrument in instrumentList.instruments {
                     cachedInstruments[instrument.id] = instrument
-                    (self.tableView?.cellForRow(at: IndexPath(row: index, section: 0)) as! WatchlistCell).symbolLabel.text = instrument.brokerageAccountSymbol
+                    (self.tableView?.cellForRow(at: IndexPath(row: index, section: 0)) as? WatchlistCell)?.symbolLabel.text = instrument.brokerageAccountSymbol
                     index += 1
                 }
             })
@@ -213,7 +215,8 @@ class WatchlistViewController: UIViewController, UITableViewDelegate, UITableVie
             instrumentIdsForUpdates = instrumentIds
             tableView.deleteRows(at: [indexPath], with: .fade)
             if instrumentIds.isEmpty {
-                addInstrumentsLabel.isHidden = false
+                emptyWatchlistLabel.isHidden = false
+                addInstrumentsButton.isHidden = false
             }
         }
     }
@@ -235,7 +238,8 @@ class WatchlistViewController: UIViewController, UITableViewDelegate, UITableVie
             instrumentIds.append(instrumentSearchResult.instrumentId)
             saveWatchlist()
             instrumentIdsForUpdates = instrumentIds
-            addInstrumentsLabel.isHidden = true
+            emptyWatchlistLabel.isHidden = true
+            addInstrumentsButton.isHidden = true
             currentAccount!.getInstruments(with: TradableInstrumentSearchRequest(instrumentIds: [instrumentSearchResult.instrumentId]), completionHandler: { (instrumentList, _) in
                 self.tableView?.insertRows(at: [newIndexPath], with: .bottom)
                 cachedInstruments[instrumentSearchResult.instrumentId] = instrumentList?.instruments.first
@@ -244,7 +248,7 @@ class WatchlistViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
 
-    func showTradeView(_ sender: UIButton) {
+    @objc func showTradeView(_ sender: UIButton) {
         if !tableView.isEditing {
             let instrumentId = instrumentIds[(tableView.indexPath(for: sender.superview!.superview! as! WatchlistCell)!.row)]
             let side: TradableOrderSide = sender.tag % 2 == 0 ? .buy : .sell
@@ -294,10 +298,10 @@ class WatchlistViewController: UIViewController, UITableViewDelegate, UITableVie
 
                     let priceString = NSMutableAttributedString(string: priceStr)
                     if instrument.pipPrecision != nil {
-                        priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.5), range: NSRange(location: 0, length: priceString.length))
-                        priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: max(0, priceString.length - length - toLast), length: min(priceString.length, length + toLast)))
+                        priceString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.5), range: NSRange(location: 0, length: priceString.length))
+                        priceString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: NSRange(location: max(0, priceString.length - length - toLast), length: min(priceString.length, length + toLast)))
                     } else {
-                        priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: priceString.length))
+                        priceString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: priceString.length))
                     }
                     askButton.setAttributedTitle(priceString, for: UIControlState())
                 }
@@ -319,10 +323,10 @@ class WatchlistViewController: UIViewController, UITableViewDelegate, UITableVie
 
                     let priceString = NSMutableAttributedString(string: priceStr)
                     if instrument.pipPrecision != nil {
-                        priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.5), range: NSRange(location: 0, length: priceString.length))
-                        priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: max(0, priceString.length - length - toLast), length: min(priceString.length, length + toLast)))
+                        priceString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.5), range: NSRange(location: 0, length: priceString.length))
+                        priceString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: NSRange(location: max(0, priceString.length - length - toLast), length: min(priceString.length, length + toLast)))
                     } else {
-                        priceString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: priceString.length))
+                        priceString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: priceString.length))
                     }
                     bidButton.setAttributedTitle(priceString, for: UIControlState())
                 }
@@ -337,4 +341,9 @@ class WatchlistViewController: UIViewController, UITableViewDelegate, UITableVie
     @IBAction func addSymbolTap(_ sender: UIBarButtonItem) {
         self.tradablePresentInstrumentSelector(for: currentAccount!, delegate: self, presentationStyle: UIModalPresentationStyle.overFullScreen)
     }
+
+    @IBAction func addInstrumentsTap(_ sender: UIButton) {
+        self.tradablePresentInstrumentSelector(for: currentAccount!, delegate: self, presentationStyle: UIModalPresentationStyle.overFullScreen)
+    }
+
 }

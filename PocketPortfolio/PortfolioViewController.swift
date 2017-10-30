@@ -11,8 +11,10 @@ import UIKit
 import TradableAPI
 
 class PortfolioViewController: UIViewController, PortfolioViewDelegate {
+
     @IBOutlet weak var portfolioView: PortfolioView!
     @IBOutlet weak var emptyPortfolioLabel: UILabel!
+    @IBOutlet weak var tradeButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     var waiting = true {
@@ -20,6 +22,7 @@ class PortfolioViewController: UIViewController, PortfolioViewDelegate {
             if waiting == true {
                 portfolioView?.isHidden = true
                 emptyPortfolioLabel?.isHidden = true
+                tradeButton?.isHidden = true
                 activityIndicator?.isHidden = false
                 activityIndicator?.startAnimating()
             }
@@ -52,18 +55,26 @@ class PortfolioViewController: UIViewController, PortfolioViewDelegate {
         if waiting {
             portfolioView.isHidden = true
             emptyPortfolioLabel.isHidden = true
+            tradeButton.isHidden = true
             activityIndicator.isHidden = false
             activityIndicator.startAnimating()
         } else {
             if empty {
                 portfolioView.isHidden = true
                 emptyPortfolioLabel.isHidden = false
+                tradeButton.isHidden = false
                 activityIndicator.stopAnimating()
             } else {
                 portfolioView.isHidden = false
                 emptyPortfolioLabel.isHidden = true
+                tradeButton.isHidden = true
                 activityIndicator.stopAnimating()
             }
         }
+    }
+
+    @IBAction func tradeTap(_ sender: UIButton) {
+        self.tradablePresentOrderEntry(for: currentAccount!, with: nil, withSide: .buy, delegate: self.navigationController as! PortfolioNavController, presentationStyle: UIModalPresentationStyle.overCurrentContext)
+        (self.navigationController!.tabBarController as! TabBarController).selectMiddleButton()
     }
 }
